@@ -22,15 +22,14 @@ def selenideVersion = "5.25.0",
     junitVersion = "5.8.2"
 
 dependencies {
-    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-    testImplementation (
-        "org.junit.jupiter:junit-jupiter:$junitVersion"
+
+    implementation(
+            "org.junit.jupiter:junit-jupiter:$junitVersion",
+            "com.codeborne:selenide:$selenideVersion",
+            "org.slf4j:slf4j-simple:$slf4jVersion",
+            "org.slf4j:slf4j-api:$slf4jVersion"
     )
 
-    implementation (
-        "com.codeborne:selenide:$selenideVersion",
-        "org.slf4j:slf4j-api:$slf4jVersion"
-    )
 }
 
 test {
