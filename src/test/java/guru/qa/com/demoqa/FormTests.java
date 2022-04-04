@@ -19,9 +19,9 @@ import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Selenide.*;
 
 
-public class FormTests extends TestBase {
+class FormTests extends TestBase {
 
-    private final Logger log = LoggerFactory.getLogger(FormTests.class);
+    final Logger log = LoggerFactory.getLogger(FormTests.class);
     ElementAction elementAction = new ElementAction();
 
     @BeforeEach
@@ -65,6 +65,7 @@ public class FormTests extends TestBase {
         //Test
         log.info("Запуск теста");
         Registration registration = new Registration();
+
         registration.
                 fillFirstName(user.getFirstName()).
                 fillLastName(user.getLastName()).

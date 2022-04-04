@@ -20,8 +20,9 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class Registration {
-    private final Logger log = LoggerFactory.getLogger(Registration.class);
+
     ElementAction elementAction = new ElementAction();
+    final Logger log = LoggerFactory.getLogger(Registration.class);
 
     public Registration fillFirstName(String firstName) {
         elementAction.fillData($(byId("firstName")), firstName);
