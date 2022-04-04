@@ -2,6 +2,8 @@ package guru.qa.com.demoqa.setup;
 
 import com.codeborne.selenide.SelenideElement;
 
+import java.io.File;
+
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byTagName;
 import static com.codeborne.selenide.Selectors.byText;
@@ -25,6 +27,10 @@ public class ElementAction {
 
     public void submit() {
         click($(byText("Submit")));
+    }
+
+    public void uploadFile(SelenideElement element, String filePath){
+        element.uploadFile(new File(filePath));
     }
 
 }
