@@ -25,48 +25,67 @@ public class Registration {
     final Logger log = LoggerFactory.getLogger(Registration.class);
 
     public Registration fillFirstName(String firstName) {
-        elementAction.fillData($(byId("firstName")), firstName);
-        log.info("Заполнена фамалия: \"" + firstName + "\".");
+        if (firstName!=null) {
+            if (!firstName.equals("")) {
+                elementAction.fillData($(byId("firstName")), firstName);
+                log.info("Заполнена фамалия: \"" + firstName + "\".");
+            }
+        }
         return this;
     }
 
     public Registration fillLastName(String lastName) {
-        elementAction.fillData($(byId("lastName")), lastName);
-        log.info("Заполнено имя: \"" + lastName + "\".");
+        if (lastName!=null) {
+            if (!lastName.equals("")) {
+                elementAction.fillData($(byId("lastName")), lastName);
+                log.info("Заполнено имя: \"" + lastName + "\".");
+            }
+        }
         return this;
     }
 
     public Registration selectGender(Gender gender) {
-        $(byText(Gender.getGenderValue(gender))).click();
-        log.info("Заполнен пол: \"" + Gender.getGenderValue(gender) + "\".");
+        if (gender!=null) {
+            $(byText(Gender.getGenderValue(gender))).click();
+            log.info("Заполнен пол: \"" + Gender.getGenderValue(gender) + "\".");
+        }
         return this;
     }
 
     public Registration fillEmail(String email) {
-        elementAction.fillData($(byId("userEmail")), email);
-        log.info("Заполнен email: \"" + email + "\".");
+        if (email!=null) {
+            if (!email.equals("")) {
+                elementAction.fillData($(byId("userEmail")), email);
+                log.info("Заполнен email: \"" + email + "\".");
+            }
+        }
         return this;
     }
 
     public Registration fillPhoneNumber(String phoneNumber) {
-        elementAction.fillData($(byId("userNumber")), phoneNumber);
-        log.info("Заполнена номер телефона: \"" + phoneNumber + "\".");
+        if (phoneNumber!=null) {
+            if (!phoneNumber.equals("")) {
+                elementAction.fillData($(byId("userNumber")), phoneNumber);
+                log.info("Заполнена номер телефона: \"" + phoneNumber + "\".");
+            }
+        }
         return this;
     }
 
     public Registration fillBDDate(int day, int month, int year) {
-        $(byId("dateOfBirthInput")).shouldBe(visible).click();
-        $x("//div[@class='react-datepicker']").shouldBe(visible);
+        if(day!=0 && month !=0 && year!=0){
+            $(byId("dateOfBirthInput")).shouldBe(visible).click();
+            $x("//div[@class='react-datepicker']").shouldBe(visible);
 
-        $(".react-datepicker__month-select").shouldBe(visible).selectOption(month - 1);
-        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(String.valueOf(year));
+            $(".react-datepicker__month-select").shouldBe(visible).selectOption(month - 1);
+            $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(String.valueOf(year));
 
-        selectDayOfBirth(day);
+            selectDayOfBirth(day);
 
-        log.info("Заполнена дата. День:\"" + day + "\", месяц:\"" + month + "\", год:\"" + year + "\".");
+            log.info("Заполнена дата. День:\"" + day + "\", месяц:\"" + month + "\", год:\"" + year + "\".");
 
-        waitForCalendarNotVisible();
-
+            waitForCalendarNotVisible();
+        }
         return this;
     }
 
@@ -83,32 +102,38 @@ public class Registration {
         } else {
             $x(dayOfBirthLocator).click();
         }
+        log.info("Выбран день рождения");
     }
 
     public Registration fillSubjects(ArrayList<Subject> subjects) {
-        for (int i = 0; i < subjects.size(); i++) {
-            $("[id=subjectsInput]").shouldBe(visible).setValue(Subject.getSubjectValue(subjects.get(i)).substring(0, 3));
-            $x("//div[contains(@class,'subjects-auto-complete__option') and text()='" + Subject.getSubjectValue(subjects.get(i)) + "']").shouldBe(visible).click();
+        if (subjects.size()!=0) {
+            for (int i = 0; i < subjects.size(); i++) {
+                $("[id=subjectsInput]").shouldBe(visible).setValue(Subject.getSubjectValue(subjects.get(i)).substring(0, 3));
+                $x("//div[contains(@class,'subjects-auto-complete__option') and text()='" + Subject.getSubjectValue(subjects.get(i)) + "']").shouldBe(visible).click();
+            }
+            log.info("Заполнены предметы: \"" + subjects + "\".");
         }
-        log.info("Заполнены предметы: \"" + subjects + "\".");
         return this;
     }
 
     public Registration selectHobbies(ArrayList<Hobby> hobbies) {
-        Hobby hobby;
-        for (int i = 0; i <= hobbies.size() - 1; i++) {
-//            $x("//*[@id='hobbiesWrapper']//div[./label[text()='" + Hobby.getHobbyValue(hobbies.get(i)) + "']]/input").setSelected(true);
-//            $x("//*[@id='hobbiesWrapper']//div[./label[text()='" + Hobby.getHobbyValue(hobbies.get(i)) + "']]/label").click();
-            $x("//*[@id='hobbiesWrapper']//div[./label[text()='" + Hobby.getHobbyValue(hobbies.get(i)) + "']]").click();
-            $x("//*[contains(@class,'complete__menu') and not(contains(@class,'multi'))]").shouldNotBe(exist);
+        if (hobbies.size()!=0) {
+            for (int i = 0; i <= hobbies.size() - 1; i++) {
+                $x("//*[@id='hobbiesWrapper']//div[./label[text()='" + Hobby.getHobbyValue(hobbies.get(i)) + "']]").click();
+                $x("//*[contains(@class,'complete__menu') and not(contains(@class,'multi'))]").shouldNotBe(exist);
+            }
+            log.info("Заполнены хобби: \"" + hobbies + "\"");
         }
-        log.info("Заполнены хобби: \"" + hobbies + "\"");
         return this;
     }
 
     public Registration uploadPicture(String fileName) {
-        uploadFile($(byId("uploadPicture")), "src/test/resources/" + fileName);
-        log.info("Загружена фотография: \"" + fileName + "\".");
+        if (fileName!=null) {
+            if (!fileName.equals("")) {
+                uploadFile($(byId("uploadPicture")), "src/test/resources/" + fileName);
+                log.info("Загружена фотография: \"" + fileName + "\".");
+            }
+        }
         return this;
     }
 
@@ -137,22 +162,33 @@ public class Registration {
 
     String assertionXpath(String variable, String value) {
         String xpath = "//div[@class='modal-body']//td[1 and text()='" + variable + "']/../td[2 and text()='" + value + "']";
-        System.out.println(xpath);
+        log.info(xpath);
         return xpath;
     }
 
     public Registration fillAddress(String address) {
-        elementAction.fillData($x("//*[@id='currentAddress']"), address);
+        if (address!=null) {
+            if (!address.equals("")) {
+                elementAction.fillData($x("//*[@id='currentAddress']"), address);
+                log.info("Заполнен адрес: \"" + address + "\".");
+            }
+        }
         return this;
     }
 
     public Registration fillState(State state) {
-        elementAction.fillDropDown($x("//*[@id='state']"), State.getStateValue(state));
+        if (state != null) {
+            elementAction.fillDropDown($x("//*[@id='state']"), State.getStateValue(state));
+            log.info("Выбран регион: \"" + State.getStateValue(state) + "\".");
+        }
         return this;
     }
 
     public Registration fillCity(City city) {
-        elementAction.fillDropDown($x("//*[@id='city']"), City.getCityValue(city));
+        if(city != null) {
+            elementAction.fillDropDown($x("//*[@id='city']"), City.getCityValue(city));
+            log.info("Выбран город: \"" + City.getCityValue(city) + "\".");
+        }
         return this;
     }
 
