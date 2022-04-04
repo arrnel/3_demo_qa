@@ -15,9 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Selenide.*;
-
+import static com.codeborne.selenide.Selenide.open;
 
 class FormTests extends TestBase {
 
@@ -31,6 +29,7 @@ class FormTests extends TestBase {
     }
 
     User userData(User user) {
+
         ArrayList<Hobby> hobbies = new ArrayList<>();
         hobbies.add(Hobby.SPORTS);
         hobbies.add(Hobby.MUSIC);
@@ -39,18 +38,18 @@ class FormTests extends TestBase {
         subjects.add(Subject.COMPUTER_SCIENCE);
         subjects.add(Subject.MATHS);
 
-        user.setFirstName("Ivan");
-        user.setLastName("Ivanov");
-        user.setEmail("my.mail@gmail.com");
-        user.setGender(Gender.MALE);
-        user.setPhoneNumber("9991112233");
-        user.setDateOfBirth("05.12.1970");
-        user.setSubjects(subjects);
-        user.setHobbies(hobbies);
-        user.setAddress("Some address information");
-        user.setPicture("image.png");
-        user.setState(State.RAJASTHAN);
-        user.setCity(City.JAISELMER);
+        user.setFirstName("Ivan")
+                .setLastName("Ivanov")
+                .setEmail("my.mail@gmail.com")
+                .setGender(Gender.MALE)
+                .setPhoneNumber("9991112233")
+                .setDateOfBirth("05.12.1970")
+                .setSubjects(subjects)
+                .setHobbies(hobbies)
+                .setAddress("Some address information")
+                .setPicture("image.png")
+                .setState(State.RAJASTHAN)
+                .setCity(City.JAISELMER);
 
         return user;
     }

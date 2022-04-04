@@ -33,47 +33,52 @@ public class User {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public User setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public User setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public User setGender(Gender gender) {
         this.gender = gender;
+        return this;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public User setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        return this;
     }
 
     public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public User setDateOfBirth(String dateOfBirth) {
         if (dateOfBirth==null || dateOfBirth.equals("")){
 
             Assertions.fail("Некорректный тип dateOfBirth: \"" + dateOfBirth + "\"");
@@ -98,78 +103,90 @@ public class User {
 
         this.dateOfBirth = dateOfBirth;
 
+        return this;
+
     }
 
     public int getDayOfBirth() {
         return dayOfBirth;
     }
 
-    public void setDayOfBirth(int dayOfBirth) {
+    public User setDayOfBirth(int dayOfBirth) {
         this.dayOfBirth = dayOfBirth;
+
+        return this;
     }
 
     public int getMonthOfBirth() {
         return monthOfBirth;
     }
 
-    public void setMonthOfBirth(int monthOfBirth) {
+    public User setMonthOfBirth(int monthOfBirth) {
         this.monthOfBirth = monthOfBirth;
+        return this;
     }
 
     public int getYearOfBirth() {
         return yearOfBirth;
     }
 
-    public void setYearOfBirth(int yearOfBirth) {
+    public User setYearOfBirth(int yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
+        return this;
     }
 
     public ArrayList<Subject> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(ArrayList<Subject> subjects) {
+    public User setSubjects(ArrayList<Subject> subjects) {
         this.subjects = subjects;
+        return this;
     }
 
     public ArrayList<Hobby> getHobbies() {
         return hobbies;
     }
 
-    public void setHobbies(ArrayList<Hobby> hobbies) {
+    public User setHobbies(ArrayList<Hobby> hobbies) {
         this.hobbies = hobbies;
+        return this;
     }
 
     public String getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public User setPicture(String picture) {
         this.picture = picture;
+        return this;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public User setAddress(String address) {
         this.address = address;
+        return this;
     }
 
     public State getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public User setState(State state) {
         this.state = state;
+        return this;
     }
 
     public City getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public User setCity(City city) {
         this.city = city;
+        return this;
     }
 
     public String getAllSubjectsInString(ArrayList<Subject> subjects) {
