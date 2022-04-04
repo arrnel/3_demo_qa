@@ -25,26 +25,31 @@ public class Registration {
 
     public Registration fillFirstName(String firstName) {
         elementAction.fillData($(byId("firstName")), firstName);
+        log.info("Заполнена фамалия: \"" + firstName + "\".");
         return this;
     }
 
     public Registration fillLastName(String lastName) {
         elementAction.fillData($(byId("lastName")), lastName);
+        log.info("Заполнено имя: \"" + lastName + "\".");
         return this;
     }
 
     public Registration selectGender(Gender gender) {
         $(byText(Gender.getGenderValue(gender))).click();
+        log.info("Заполнен пол: \"" + Gender.getGenderValue(gender) + "\".");
         return this;
     }
 
     public Registration fillEmail(String email) {
         elementAction.fillData($(byId("userEmail")), email);
+        log.info("Заполнен email: \"" + email + "\".");
         return this;
     }
 
     public Registration fillPhoneNumber(String phoneNumber) {
         elementAction.fillData($(byId("userNumber")), phoneNumber);
+        log.info("Заполнена номер телефона: \"" + phoneNumber + "\".");
         return this;
     }
 
@@ -56,6 +61,8 @@ public class Registration {
         $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(String.valueOf(year));
 
         selectDayOfBirth(day);
+
+        log.info("Заполнена дата. День:\"" + day + "\", месяц:\"" + month + "\", год:\"" + year + "\".");
 
         waitForCalendarNotVisible();
 
@@ -82,6 +89,7 @@ public class Registration {
             $("[id=subjectsInput]").shouldBe(visible).setValue(Subject.getSubjectValue(subjects.get(i)).substring(0, 3));
             $x("//div[contains(@class,'subjects-auto-complete__option') and text()='" + Subject.getSubjectValue(subjects.get(i)) + "']").shouldBe(visible).click();
         }
+        log.info("Заполнены предметы: \"" + subjects + "\".");
         return this;
     }
 
@@ -93,11 +101,13 @@ public class Registration {
             $x("//*[@id='hobbiesWrapper']//div[./label[text()='" + Hobby.getHobbyValue(hobbies.get(i)) + "']]").click();
             $x("//*[contains(@class,'complete__menu') and not(contains(@class,'multi'))]").shouldNotBe(exist);
         }
+        log.info("Заполнены хобби: \"" + hobbies + "\"");
         return this;
     }
 
     public Registration uploadPicture(String fileName) {
         uploadFile($(byId("uploadPicture")), "src/test/resources/" + fileName);
+        log.info("Загружена фотография: \"" + fileName + "\".");
         return this;
     }
 
@@ -107,6 +117,8 @@ public class Registration {
 
     public Registration assertFormValues(User user) {
         DateConverter convertDate = new DateConverter();
+
+        log.info("Проверяем соответствие введеных значений с результатами на форме.");
         Assertions.assertTrue($x(assertionXpath("Student Name", user.getFirstName() + " " + user.getLastName())).isDisplayed());
         Assertions.assertTrue($x(assertionXpath("Student Email", user.getEmail())).isDisplayed());
         Assertions.assertTrue($x(assertionXpath("Gender", Gender.getGenderValue(user.getGender()))).isDisplayed());
@@ -117,6 +129,8 @@ public class Registration {
         Assertions.assertTrue($x(assertionXpath("Picture", user.getPicture())).isDisplayed());
         Assertions.assertTrue($x(assertionXpath("Address", user.getAddress())).isDisplayed());
         Assertions.assertTrue($x(assertionXpath("State and City", State.getStateValue(user.getState()) + " " + City.getCityValue(user.getCity()))).isDisplayed());
+
+        log.info("Ошибок нет. Форма заполнена корректно.");
         return this;
     }
 
