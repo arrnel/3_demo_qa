@@ -74,26 +74,42 @@ public class Registration {
 
     public Registration fillBDDate(int day, int month, int year) {
         if(day!=0 && month !=0 && year!=0){
-            $(byId("dateOfBirthInput")).shouldBe(visible).click();
-            $x("//div[@class='react-datepicker']").shouldBe(visible);
 
-            $(".react-datepicker__month-select").shouldBe(visible).selectOption(month - 1);
-            $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(String.valueOf(year));
-
-            selectDayOfBirth(day);
+            Registration registration = new Registration();
+            registration.openCalendar()
+                    .selectMonth(month)
+                    .selectYear(year).
+                    selectDayOfBirth(day)
+                    .waitForCalendarNotVisible();
 
             log.info("Заполнена дата. День:\"" + day + "\", месяц:\"" + month + "\", год:\"" + year + "\".");
-
-            waitForCalendarNotVisible();
         }
+
         return this;
     }
 
-    void waitForCalendarNotVisible() {
-        $(byClassName("react-datepicker__month-container")).shouldNotBe(visible);
+    Registration openCalendar() {
+        $(byId("dateOfBirthInput")).shouldBe(visible).click();
+        $x("//div[@class='react-datepicker']").shouldBe(visible);
+        return this;
     }
 
-    void selectDayOfBirth(int dayOfBirth) {
+    Registration selectYear(int year) {
+        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(String.valueOf(year));
+        return this;
+    }
+
+    Registration selectMonth(int month) {
+        $(".react-datepicker__month-select").shouldBe(visible).selectOption(month - 1);
+        return this;
+    }
+
+    Registration waitForCalendarNotVisible() {
+        $(byClassName("react-datepicker__month-container")).shouldNotBe(visible);
+        return this;
+    }
+
+    Registration selectDayOfBirth(int dayOfBirth) {
         String dayOfBirthLocator = "//div[@class='react-datepicker__month']/div[contains(@class,'react-datepicker__week')]/div[text()='" + dayOfBirth + "']";
         if (dayOfBirth >= 22) {
             if ($$x(dayOfBirthLocator).size() == 2) {
@@ -103,6 +119,7 @@ public class Registration {
             $x(dayOfBirthLocator).click();
         }
         log.info("Выбран день рождения");
+        return this;
     }
 
     public Registration fillSubjects(ArrayList<Subject> subjects) {
@@ -130,16 +147,14 @@ public class Registration {
     public Registration uploadPicture(String fileName) {
         if (fileName!=null) {
             if (!fileName.equals("")) {
-                uploadFile($(byId("uploadPicture")), "src/test/resources/" + fileName);
+                elementAction.uploadFile($(byId("uploadPicture")), "src/test/resources/" + fileName);
                 log.info("Загружена фотография: \"" + fileName + "\".");
             }
         }
         return this;
     }
 
-    public void uploadFile(SelenideElement element, String filePath){
-        element.uploadFile(new File(filePath));
-    }
+
 
     public Registration assertFormValues(User user) {
         DateConverter convertDate = new DateConverter();
@@ -155,8 +170,8 @@ public class Registration {
         Assertions.assertTrue($x(assertionXpath("Picture", user.getPicture())).isDisplayed());
         Assertions.assertTrue($x(assertionXpath("Address", user.getAddress())).isDisplayed());
         Assertions.assertTrue($x(assertionXpath("State and City", State.getStateValue(user.getState()) + " " + City.getCityValue(user.getCity()))).isDisplayed());
-
         log.info("Ошибок нет. Форма заполнена корректно.");
+
         return this;
     }
 
