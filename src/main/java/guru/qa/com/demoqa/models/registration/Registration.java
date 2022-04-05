@@ -1,5 +1,6 @@
 package guru.qa.com.demoqa.models.registration;
 
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import guru.qa.com.demoqa.helpers.DateConverter;
 import guru.qa.com.demoqa.objects.user.User;
@@ -111,12 +112,15 @@ public class Registration {
 
     Registration selectDayOfBirth(int dayOfBirth) {
         String dayOfBirthLocator = "//div[@class='react-datepicker__month']/div[contains(@class,'react-datepicker__week')]/div[text()='" + dayOfBirth + "']";
+        ElementsCollection similarDaysCounts = $$x(dayOfBirthLocator).filterBy(visible);
         if (dayOfBirth >= 22) {
-            if ($$x(dayOfBirthLocator).size() == 2) {
-                $$(dayOfBirthLocator).get(1).click();
+            if (similarDaysCounts.size() > 1) {
+                similarDaysCounts.get(1).click();
+            }else{
+                similarDaysCounts.get(0).click();
             }
         } else {
-            $x(dayOfBirthLocator).click();
+            similarDaysCounts.get(0).click();
         }
         log.info("Выбран день рождения");
         return this;
