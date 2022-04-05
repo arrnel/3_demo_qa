@@ -43,7 +43,7 @@ class FormTests extends TestBase {
                 .setEmail("my.mail@gmail.com")
                 .setGender(Gender.MALE)
                 .setPhoneNumber("9991112233")
-                .setDateOfBirth("05.12.1970")
+                .setDateOfBirth("23.12.1970")
                 .setSubjects(subjects)
                 .setHobbies(hobbies)
                 .setAddress("Some address information")
