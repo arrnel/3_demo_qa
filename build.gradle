@@ -17,9 +17,9 @@ repositories {
 }
 
 def selenideVersion = "6.3.5",
-//def selenideVersion = "5.25.0",
     slf4jVersion = "1.7.36",
-    junitVersion = "5.8.2"
+    junitVersion = "5.8.2",
+    javaFakerVersion = "1.0.2"
 
 dependencies {
 
@@ -27,7 +27,8 @@ dependencies {
             "org.junit.jupiter:junit-jupiter:$junitVersion",
             "com.codeborne:selenide:$selenideVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion",
-            "org.slf4j:slf4j-api:$slf4jVersion"
+            "org.slf4j:slf4j-api:$slf4jVersion",
+            "com.github.javafaker:javafaker:$javaFakerVersion"
     )
 
 }

@@ -2,6 +2,7 @@ package guru.qa.com.demoqa;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import com.github.javafaker.Faker;
 import guru.qa.com.demoqa.models.registration.Registration;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.objects.user.userObjects.*;
@@ -13,7 +14,9 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static com.codeborne.selenide.Selenide.open;
 
@@ -21,6 +24,7 @@ class FormTests extends TestBase {
 
     final Logger log = LoggerFactory.getLogger(FormTests.class);
     ElementAction elementAction = new ElementAction();
+    Faker faker = new Faker(new Locale("ru"));
 
     @BeforeEach
     void setupBeforeEachTests() {
@@ -38,15 +42,15 @@ class FormTests extends TestBase {
         subjects.add(Subject.COMPUTER_SCIENCE);
         subjects.add(Subject.MATHS);
 
-        user.setFirstName("Ivan")
-                .setLastName("Ivanov")
-                .setEmail("my.mail@gmail.com")
+        user.setFirstName(faker.name().firstName())
+                .setLastName(faker.name().lastName())
+                .setEmail(faker.internet().emailAddress())
                 .setGender(Gender.MALE)
-                .setPhoneNumber("9991112233")
-                .setDateOfBirth("23.12.1970")
+                .setPhoneNumber(faker.phoneNumber().subscriberNumber(10))
+                .setDateOfBirth(new SimpleDateFormat("dd.MM.yyyy").format(faker.date().birthday()))
                 .setSubjects(subjects)
                 .setHobbies(hobbies)
-                .setAddress("Some address information")
+                .setAddress(faker.address().fullAddress())
                 .setPicture("image.png")
                 .setState(State.RAJASTHAN)
                 .setCity(City.JAISELMER);
