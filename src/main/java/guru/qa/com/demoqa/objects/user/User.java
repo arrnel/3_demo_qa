@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
 
@@ -23,8 +24,8 @@ public class User {
     int dayOfBirth;
     int monthOfBirth;
     int yearOfBirth;
-    ArrayList<Subject> subjects;
-    ArrayList<Hobby> hobbies;
+    List<Subject> subjects;
+    List<Hobby> hobbies;
     String picture;
     String address;
     State state;
@@ -135,20 +136,20 @@ public class User {
         return this;
     }
 
-    public ArrayList<Subject> getSubjects() {
+    public List<Subject> getSubjects() {
         return subjects;
     }
 
-    public User setSubjects(ArrayList<Subject> subjects) {
+    public User setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
         return this;
     }
 
-    public ArrayList<Hobby> getHobbies() {
+    public List<Hobby> getHobbies() {
         return hobbies;
     }
 
-    public User setHobbies(ArrayList<Hobby> hobbies) {
+    public User setHobbies(List<Hobby> hobbies) {
         this.hobbies = hobbies;
         return this;
     }
@@ -189,12 +190,12 @@ public class User {
         return this;
     }
 
-    public String getAllSubjectsInString(ArrayList<Subject> subjects) {
+    public String getAllSubjectsInString(List<Subject> subjects) {
         StringBuilder text = new StringBuilder();
 
         for (int i = 0; i < subjects.size(); i++){
             text.append(Subject.getSubjectValue(subjects.get(i)));
-            if(subjects.size() < 2 || i != subjects.size() - 1){
+            if(i != subjects.size() - 1){
                 text.append(", ");
             }
         }
@@ -202,7 +203,7 @@ public class User {
         return text.toString();
     }
 
-    public String getAllHobbiesInString(ArrayList<Hobby> hobbies) {
+    public String getAllHobbiesInString(List<Hobby> hobbies) {
         StringBuilder text = new StringBuilder();
 
         for (int i = 0; i < hobbies.size(); i++){
