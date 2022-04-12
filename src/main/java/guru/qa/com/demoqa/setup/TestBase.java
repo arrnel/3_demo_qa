@@ -9,6 +9,9 @@ import org.junit.jupiter.api.BeforeAll;
 
 public class TestBase {
 
+    /**
+     * Действия перед запусками всех тестов
+     */
     @BeforeAll
     static void setupBeforeAllTests(){
         Configuration.holdBrowserOpen = false; // Браузер не будет закрываться по окончанию теста
@@ -16,6 +19,9 @@ public class TestBase {
         Configuration.browserSize = "1920x1080";
     }
 
+    /**
+     * Действия после прогона всех тестов
+     */
     @AfterAll
     static void setupAfterAllTests(){
         Selenide.closeWebDriver();
