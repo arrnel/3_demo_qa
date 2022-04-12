@@ -11,7 +11,7 @@ public class TestBase {
 
     @BeforeAll
     static void setupBeforeAllTests(){
-        Configuration.holdBrowserOpen = true; // Браузер не будет закрываться по окончанию теста
+        Configuration.holdBrowserOpen = false; // Браузер не будет закрываться по окончанию теста
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.browserSize = "1920x1080";
     }

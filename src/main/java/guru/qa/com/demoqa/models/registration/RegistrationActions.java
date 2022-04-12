@@ -1,6 +1,7 @@
 package guru.qa.com.demoqa.models.registration;
 
-import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.github.javafaker.Faker;
 import guru.qa.com.demoqa.helpers.DateConverter;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.objects.user.userObjects.*;
@@ -9,23 +10,24 @@ import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.util.*;
 
-import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
-public class RegistrationActions {
+public class RegistrationActions extends RegistrationLocators{
 
+    Faker faker = new Faker();
     ElementAction elementAction = new ElementAction();
     final Logger log = LoggerFactory.getLogger(RegistrationActions.class);
+    RegistrationLocators locator = new RegistrationLocators();
 
     public RegistrationActions fillFirstName(String firstName) {
 
         if (firstName != null) {
             if (!firstName.equals("")) {
-                elementAction.fillData($(byId("firstName")), firstName);
+                elementAction.fillData(locator.firstName(), firstName);
                 log.info("Заполнена фамалия: \"" + firstName + "\".");
             }
         }
@@ -38,7 +40,7 @@ public class RegistrationActions {
 
         if (lastName != null) {
             if (!lastName.equals("")) {
-                elementAction.fillData($(byId("lastName")), lastName);
+                elementAction.fillData(locator.lastName(), lastName);
                 log.info("Заполнено имя: \"" + lastName + "\".");
             }
         }
@@ -50,7 +52,7 @@ public class RegistrationActions {
     public RegistrationActions selectGender(Gender gender) {
 
         if (gender != null) {
-            $(byText(Gender.getGenderValue(gender))).click();
+            $(locator.gender(gender)).click();
             log.info("Заполнен пол: \"" + Gender.getGenderValue(gender) + "\".");
         }
 
@@ -63,7 +65,7 @@ public class RegistrationActions {
         if (email != null) {
 
             if (!email.equals("")) {
-                elementAction.fillData($(byId("userEmail")), email);
+                elementAction.fillData(locator.email(), email);
                 log.info("Заполнен email: \"" + email + "\".");
             }
 
@@ -79,7 +81,7 @@ public class RegistrationActions {
 
             if (!phoneNumber.equals("")) {
 
-                elementAction.fillData($(byId("userNumber")), phoneNumber);
+                elementAction.fillData(locator.phoneNumber(), phoneNumber);
                 log.info("Заполнена номер телефона: \"" + phoneNumber + "\".");
 
             }
@@ -106,8 +108,8 @@ public class RegistrationActions {
 
     RegistrationActions openCalendar() {
 
-        $(byId("dateOfBirthInput")).shouldBe(visible).click();
-        $x("//div[@class='react-datepicker']").shouldBe(visible);
+        locator.dateOfBirth().shouldBe(visible).click();
+        locator.calendar().shouldBe(visible);
 
         return this;
 
@@ -115,7 +117,7 @@ public class RegistrationActions {
 
     RegistrationActions selectYear(int year) {
 
-        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(String.valueOf(year));
+        locator.yearOfBD().shouldBe(visible).selectOptionByValue(String.valueOf(year));
 
         return this;
 
@@ -123,7 +125,7 @@ public class RegistrationActions {
 
     RegistrationActions selectMonth(int month) {
 
-        $(".react-datepicker__month-select").shouldBe(visible).selectOption(month - 1);
+        locator.monthOfBD().shouldBe(visible).selectOption(month - 1);
 
         return this;
 
@@ -135,17 +137,7 @@ public class RegistrationActions {
 
     RegistrationActions selectDayOfBirth(int dayOfBirth) {
 
-        String dayOfBirthLocator = "//div[@class='react-datepicker__month']/div[contains(@class,'react-datepicker__week')]/div[text()='" + dayOfBirth + "']";
-        ElementsCollection similarDaysCounts = $$x(dayOfBirthLocator).filterBy(visible);
-        if (dayOfBirth >= 22) {
-            if (similarDaysCounts.size() > 1) {
-                similarDaysCounts.get(1).click();
-            } else {
-                similarDaysCounts.get(0).click();
-            }
-        } else {
-            similarDaysCounts.get(0).click();
-        }
+        locator.dayOfBirth(dayOfBirth).shouldBe(visible).click();
         log.info("Выбран день рождения");
 
         return this;
@@ -155,12 +147,15 @@ public class RegistrationActions {
     public RegistrationActions fillSubjects(List<Subject> subjects) {
 
         if (subjects.size() != 0) {
+
             for (Subject subject : subjects) {
-                $("[id=subjectsInput]").shouldBe(visible).setValue(Subject.getSubjectValue(subject).substring(0, 3));
-                $x("//div[contains(@class,'subjects-auto-complete__option') and text()='" + Subject.getSubjectValue(subject) + "']").shouldBe(visible).click();
+                locator.subject().shouldBe(visible).setValue(Subject.getSubjectValue(subject).substring(0, 3));
+                locator.subjectName(subject).shouldBe(visible).click();
             }
-            log.info("Заполнены предметы: \"" + subjects + "\".");
+
         }
+
+        log.info("Заполнены предметы: \"" + subjects + "\".");
 
         return this;
 
@@ -170,8 +165,7 @@ public class RegistrationActions {
 
         if (hobbies.size() != 0) {
             for (int i = 0; i <= hobbies.size() - 1; i++) {
-                $x("//*[@id='hobbiesWrapper']//div[./label[text()='" + Hobby.getHobbyValue(hobbies.get(i)) + "']]").click();
-                $x("//*[contains(@class,'complete__menu') and not(contains(@class,'multi'))]").shouldNotBe(exist);
+                $x(String.format("//*[@id='hobbiesWrapper']//div[./label[text()='%s']]", Hobby.getHobbyValue(hobbies.get(i)))).click();
             }
             log.info("Заполнены хобби: \"" + hobbies + "\"");
         }
@@ -184,7 +178,7 @@ public class RegistrationActions {
 
         if (fileName != null) {
             if (!fileName.equals("")) {
-                elementAction.uploadFile($(byId("uploadPicture")), "src/test/resources/" + fileName);
+                elementAction.uploadFile(locator.picture(), "src/test/resources/" + fileName);
                 log.info("Загружена фотография: \"" + fileName + "\".");
             }
         }
@@ -210,27 +204,38 @@ public class RegistrationActions {
 
         log.info("Проверяем соответствие введеных значений с результатами на форме.");
 
-        Assertions.assertTrue($x(assertionXpath("Student Name", expectedName)).isDisplayed());
-        Assertions.assertTrue($x(assertionXpath("Student Email", expectedEmail)).isDisplayed());
-        Assertions.assertTrue($x(assertionXpath("Gender", expectedGender)).isDisplayed());
-        Assertions.assertTrue($x(assertionXpath("Mobile", expectedMobile)).isDisplayed());
-        Assertions.assertTrue($x(assertionXpath("Date of Birth", expectedDateOfBirth)).isDisplayed());
-        Assertions.assertTrue($x(assertionXpath("Subjects", expectedSubjects)).isDisplayed());
-        Assertions.assertTrue($x(assertionXpath("Hobbies", expectedHobbies)).isDisplayed());
-        Assertions.assertTrue($x(assertionXpath("Picture", expectedPicture)).isDisplayed());
-        Assertions.assertTrue($x(assertionXpath("Address", expectedAddress)).isDisplayed());
-        Assertions.assertTrue($x(assertionXpath("State and City", expectedStateAndCity)).isDisplayed());
+        String actualName = modalElementValue("Student Name").shouldBe(visible).getText(),
+                actualEmail = modalElementValue("Student Email").shouldBe(visible).getText(),
+                actualGender = modalElementValue("Gender").shouldBe(visible).getText(),
+                actualPhoneNumber = modalElementValue("Mobile").shouldBe(visible).getText(),
+                actualBD = modalElementValue("Date of Birth").shouldBe(visible).getText(),
+                actualSubjects = modalElementValue("Subjects").shouldBe(visible).getText(),
+                actualHobbies = modalElementValue("Hobbies").shouldBe(visible).getText(),
+                actualPicture = modalElementValue("Picture").shouldBe(visible).getText(),
+                actualAddress = modalElementValue("Address").shouldBe(visible).getText(),
+                actualStateAndCity = modalElementValue("State and City").shouldBe(visible).getText();
+
+        Assertions.assertEquals(expectedName, actualName);
+        Assertions.assertEquals(expectedEmail, actualEmail);
+        Assertions.assertEquals(expectedGender, actualGender);
+        Assertions.assertEquals(expectedMobile, actualPhoneNumber);
+        Assertions.assertEquals(expectedDateOfBirth, actualBD);
+        Assertions.assertEquals(expectedSubjects, actualSubjects);
+        Assertions.assertEquals(expectedHobbies, actualHobbies);
+        Assertions.assertEquals(expectedPicture, actualPicture);
+        Assertions.assertEquals(expectedAddress, actualAddress);
+        Assertions.assertEquals(expectedStateAndCity, actualStateAndCity);
 
         log.info("Ошибок нет. Форма заполнена корректно.");
 
     }
 
-    String assertionXpath(String variable, String value) {
+    SelenideElement modalElementValue(String variable) {
 
-        String xpath = "//div[@class='modal-body']//td[1 and text()='" + variable + "']/../td[2 and text()='" + value + "']";
+        String xpath = "//div[@class='modal-body']//td[text()='" + variable + "']/following-sibling::td";
         log.info(xpath);
 
-        return xpath;
+        return $x(xpath);
 
     }
 
@@ -238,7 +243,7 @@ public class RegistrationActions {
 
         if (address != null) {
             if (!address.equals("")) {
-                elementAction.fillData($x("//*[@id='currentAddress']"), address);
+                elementAction.fillData(locator.address(), address);
                 log.info("Заполнен адрес: \"" + address + "\".");
             }
         }
@@ -250,7 +255,7 @@ public class RegistrationActions {
     public RegistrationActions fillState(State state) {
 
         if (state != null) {
-            elementAction.fillDropDown($x("//*[@id='state']"), State.getStateValue(state));
+            elementAction.fillDropDown(locator.state(), State.getStateValue(state));
             log.info("Выбран регион: \"" + State.getStateValue(state) + "\".");
         }
 
@@ -261,7 +266,7 @@ public class RegistrationActions {
     public RegistrationActions fillCity(City city) {
 
         if (city != null) {
-            elementAction.fillDropDown($x("//*[@id='city']"), City.getCityValue(city));
+            elementAction.fillDropDown(locator.city(), City.getCityValue(city));
             log.info("Выбран город: \"" + City.getCityValue(city) + "\".");
         }
 
@@ -274,6 +279,26 @@ public class RegistrationActions {
         $(byText("Submit")).shouldBe(visible).click();
 
         return this;
+
+    }
+
+    public List<Subject> getRandomSubjects() {
+
+        List<Subject> subjects = new ArrayList<>(EnumSet.allOf(Subject.class));
+        Collections.shuffle(subjects);
+        subjects = subjects.subList(0, faker.random().nextInt(1, subjects.size()));
+
+        return subjects;
+
+    }
+
+    public List<Hobby> getRandomHobbies() {
+
+        List<Hobby> hobbies = new ArrayList<>(EnumSet.allOf(Hobby.class));
+        Collections.shuffle(hobbies);
+        hobbies = hobbies.subList(0, faker.random().nextInt(1, hobbies.size()));
+
+        return hobbies;
 
     }
 }

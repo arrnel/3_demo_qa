@@ -19,8 +19,8 @@ import static com.codeborne.selenide.Selenide.open;
 
 class FormTests extends TestBase {
 
+    RegistrationActions registration;
     final Logger log = LoggerFactory.getLogger(FormTests.class);
-    Faker faker = new Faker(new Locale("ru"));
 
     @BeforeEach
     void setupBeforeEachTests() {
@@ -28,6 +28,8 @@ class FormTests extends TestBase {
     }
 
     User userData(User user) {
+
+        Faker faker = new Faker(new Locale("ru"));
 
         String  firstname = faker.name().firstName(),
                 lastName = faker.name().lastName(),
@@ -39,8 +41,9 @@ class FormTests extends TestBase {
 
         Gender gender = Gender.values()[new Random().nextInt(Gender.values().length)];
 
-        List<Hobby> hobbies = getRandomHobbies();
-        List<Subject> subjects = getRandomSubjects();
+        registration = new RegistrationActions();
+        List<Hobby> hobbies = registration.getRandomHobbies();
+        List<Subject> subjects = registration.getRandomSubjects();
 
         State state = State.values()[new Random().nextInt(State.values().length)];
 
@@ -64,26 +67,6 @@ class FormTests extends TestBase {
 
     }
 
-    public List<Subject> getRandomSubjects() {
-
-        List<Subject> subjects = new ArrayList<>(EnumSet.allOf(Subject.class));
-        Collections.shuffle(subjects);
-        subjects = subjects.subList(0, faker.random().nextInt(1, subjects.size()));
-
-        return subjects;
-
-    }
-
-    public List<Hobby> getRandomHobbies() {
-
-        List<Hobby> hobbies = new ArrayList<>(EnumSet.allOf(Hobby.class));
-        Collections.shuffle(hobbies);
-        hobbies = hobbies.subList(0, faker.random().nextInt(1, hobbies.size()));
-
-        return hobbies;
-
-    }
-
     @Test
     void testCorrectName() {
 
@@ -94,7 +77,7 @@ class FormTests extends TestBase {
         //Test
         log.info("Запуск теста");
 
-        RegistrationActions registration = new RegistrationActions();
+        registration = new RegistrationActions();
 
         registration.
                 fillFirstName(user.getFirstName()).
@@ -115,6 +98,7 @@ class FormTests extends TestBase {
         registration.assertFormValues(user);
 
         log.info("Конец теста");
+
     }
 
     @AfterEach
