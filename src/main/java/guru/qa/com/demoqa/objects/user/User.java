@@ -208,7 +208,7 @@ public class User {
 
         for (int i = 0; i < hobbies.size(); i++){
             text.append(Hobby.getHobbyValue(hobbies.get(i)));
-            if(hobbies.size() < 2 || i != hobbies.size() - 1){
+            if(i != hobbies.size() - 1){
                 text.append(", ");
             }
         }

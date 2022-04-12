@@ -232,10 +232,7 @@ public class RegistrationActions extends RegistrationLocators{
 
     SelenideElement modalElementValue(String variable) {
 
-        String xpath = "//div[@class='modal-body']//td[text()='" + variable + "']/following-sibling::td";
-        log.info(xpath);
-
-        return $x(xpath);
+        return $x("//div[@class='modal-body']//td[text()='" + variable + "']/following-sibling::td");
 
     }
 
