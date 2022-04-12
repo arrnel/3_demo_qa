@@ -1,11 +1,10 @@
 package guru.qa.com.demoqa;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import guru.qa.com.demoqa.models.registration.Registration;
+import com.github.javafaker.Faker;
+import guru.qa.com.demoqa.models.registration.RegistrationActions;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.objects.user.userObjects.*;
-import guru.qa.com.demoqa.setup.ElementAction;
 import guru.qa.com.demoqa.setup.TestBase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,45 +12,59 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static com.codeborne.selenide.Selenide.open;
 
 class FormTests extends TestBase {
 
+    RegistrationActions registration;
     final Logger log = LoggerFactory.getLogger(FormTests.class);
-    ElementAction elementAction = new ElementAction();
 
     @BeforeEach
     void setupBeforeEachTests() {
-        Configuration.baseUrl = "https://demoqa.com";
         open("/automation-practice-form");
     }
 
     User userData(User user) {
 
-        ArrayList<Hobby> hobbies = new ArrayList<>();
-        hobbies.add(Hobby.SPORTS);
-        hobbies.add(Hobby.MUSIC);
+        Faker faker = new Faker(new Locale("ru"));
 
-        ArrayList<Subject> subjects = new ArrayList<>();
-        subjects.add(Subject.COMPUTER_SCIENCE);
-        subjects.add(Subject.MATHS);
+        String  firstname = faker.name().firstName(),
+                lastName = faker.name().lastName(),
+                email = new Faker(new Locale("en")).internet().emailAddress(),
+                phoneNumber = faker.phoneNumber().subscriberNumber(10),
+                dateOfBirth = new SimpleDateFormat("dd.MM.yyyy").format(faker.date().birthday()),
+                image = "image.png",
+                address = faker.address().fullAddress();
 
-        user.setFirstName("Ivan")
-                .setLastName("Ivanov")
-                .setEmail("my.mail@gmail.com")
-                .setGender(Gender.MALE)
-                .setPhoneNumber("9991112233")
-                .setDateOfBirth("23.12.1970")
+        Gender gender = Gender.values()[new Random().nextInt(Gender.values().length)];
+
+        registration = new RegistrationActions();
+        List<Hobby> hobbies = registration.getRandomHobbies();
+        List<Subject> subjects = registration.getRandomSubjects();
+
+        State state = State.values()[new Random().nextInt(State.values().length)];
+
+        List<City> cities = State.availableCitiesOfState(state);
+        City city = cities.get(faker.random().nextInt(cities.size()));
+
+        user.setFirstName(firstname)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setGender(gender)
+                .setPhoneNumber(phoneNumber)
+                .setDateOfBirth(dateOfBirth)
                 .setSubjects(subjects)
                 .setHobbies(hobbies)
-                .setAddress("Some address information")
-                .setPicture("image.png")
-                .setState(State.RAJASTHAN)
-                .setCity(City.JAISELMER);
+                .setAddress(address)
+                .setPicture(image)
+                .setState(state)
+                .setCity(city);
 
         return user;
+
     }
 
     @Test
@@ -63,7 +76,8 @@ class FormTests extends TestBase {
 
         //Test
         log.info("Запуск теста");
-        Registration registration = new Registration();
+
+        registration = new RegistrationActions();
 
         registration.
                 fillFirstName(user.getFirstName()).
@@ -84,11 +98,13 @@ class FormTests extends TestBase {
         registration.assertFormValues(user);
 
         log.info("Конец теста");
+
     }
 
     @AfterEach
     void setupAfterEachTests() {
         Selenide.closeWindow();
     }
+
 
 }
