@@ -13,23 +13,86 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Данные пользователя
+ */
 public class User {
 
+    /**
+     * Имя пользователя
+     */
     String firstName;
+
+    /**
+     * Фамилия пользователя
+     */
     String lastName;
+
+    /**
+     * Почтовый ящик пользователя
+     */
     String email;
+
+    /**
+     * Пол пользователя
+     */
     Gender gender;
+
+    /**
+     * Номер телефона пользователя
+     */
     String phoneNumber;
+
+    /**
+     * Дата рождения пользователя
+     */
     String dateOfBirth;
+
+    /**
+     * День рождения пользователя
+     */
     int dayOfBirth;
+
+    /**
+     * Месяц рождения пользователя
+     */
     int monthOfBirth;
+
+    /**
+     * Год рождения пользователя
+     */
     int yearOfBirth;
+
+    /**
+     * Список с предметами пользователя
+     */
     List<Subject> subjects;
+
+    /**
+     * Список с хобби пользователя
+     */
     List<Hobby> hobbies;
+
+    /**
+     * Аватар пользователя
+     */
     String picture;
+
+    /**
+     * Адрес пользователя
+     */
     String address;
+
+    /**
+     * Регион пользователя
+     */
     State state;
+
+    /**
+     * Город пользователя
+     */
     City city;
+
     public String getFirstName() {
         return firstName;
     }

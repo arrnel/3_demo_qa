@@ -19,24 +19,41 @@ import static java.lang.System.in;
 
 public class ElementAction {
 
+    /**
+     * Клик по элементу</>
+     */
     public void click(SelenideElement element) {
         element.shouldBe(visible).click();
     }
 
+    /**
+     * Установить значение поля (ввод текста в input, textarea)</>
+     */
     public void fillData(SelenideElement element, String value) {
         element.shouldBe(visible).setValue(value);
     }
 
+    /**
+     * Ввести часть текста и выбрать элемент по тексту
+     */
     public void fillDropDown(SelenideElement element, String value) {
         element.shouldBe(visible).click();
         element.$(byTagName("input")).shouldBe(visible).setValue(value.substring(0, 2));
         element.$(byText(value)).click();
     }
 
+    /**
+     * Подтверждение
+     */
     public void submit() {
         click($(byText("Submit")));
     }
 
+    /**
+     * Загрузка файла
+     * @param element элемент, в который будет загружен файл
+     * @param filePath путь до файла
+     */
     public void uploadFile(SelenideElement element, String filePath){
         element.uploadFile(new File(filePath));
     }
