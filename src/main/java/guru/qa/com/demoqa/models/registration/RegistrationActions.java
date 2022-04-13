@@ -1,29 +1,26 @@
 package guru.qa.com.demoqa.models.registration;
 
-import com.github.javafaker.Faker;
 import guru.qa.com.demoqa.helpers.DateConverter;
 import guru.qa.com.demoqa.helpers.UserHelper;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.objects.user.userObjects.*;
 import guru.qa.com.demoqa.setup.ElementAction;
-import lombok.Builder;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.List;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.*;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selectors.byClassName;
+import static com.codeborne.selenide.Selenide.$;
 
 /**
  * Дейстия на странице регистрации пользователя
  */
 public class RegistrationActions {
 
-    Faker faker = new Faker();
     ElementAction elementAction = new ElementAction();
     final Logger log = LoggerFactory.getLogger(RegistrationActions.class);
     RegistrationLocators locator = new RegistrationLocators();
@@ -273,7 +270,7 @@ public class RegistrationActions {
      *
      * @param fileName - Имя изображения с расширением в "/src/test/resources/..."
      */
-    
+
     public RegistrationActions uploadPicture(String fileName) {
 
         if (!fileName.equals("")) {
@@ -356,7 +353,7 @@ public class RegistrationActions {
     public void assertFormValues(User user) {
 
         DateConverter convertDate = new DateConverter();
-        UserHelper userHelper= new UserHelper();
+        UserHelper userHelper = new UserHelper();
 
         log.info("Проверяем соответствие введеных значений с результатами на форме.");
 

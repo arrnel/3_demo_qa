@@ -3,7 +3,6 @@ package guru.qa.com.demoqa.models.registration;
 import com.codeborne.selenide.SelenideElement;
 import guru.qa.com.demoqa.objects.user.userObjects.Gender;
 import guru.qa.com.demoqa.objects.user.userObjects.Subject;
-import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selectors.byId;
 import static com.codeborne.selenide.Selectors.byText;

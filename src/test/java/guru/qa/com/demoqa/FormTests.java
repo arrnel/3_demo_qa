@@ -58,38 +58,6 @@ class FormTests extends TestBase {
 
     }
 
-    @Test
-    void testCorrectName1() {
-
-        //Data
-        user = users.userWithAllCorrectData();
-
-        //Test
-        log.info("Запуск теста");
-
-        registration = new RegistrationActions();
-
-        registration.
-                fillFirstName(user.getFirstName()).
-                fillLastName(user.getLastName()).
-                selectGender(user.getGender()).
-                fillEmail(user.getEmail()).
-                fillPhoneNumber(user.getPhoneNumber()).
-                fillDate(user.getDayOfBirth(), user.getMonthOfBirth(), user.getYearOfBirth()).
-                fillSubjects(user.getSubjects()).
-                selectHobbies(user.getHobbies()).
-                uploadPicture(user.getPicture()).
-                fillAddress(user.getAddress()).
-                fillState(user.getState()).
-                fillCity(user.getCity()).
-                submit();
-
-        //Assertions
-        registration.assertFormValues(user);
-
-        log.info("Конец теста");
-
-    }
 
     @AfterEach
     void setupAfterEachTests() {

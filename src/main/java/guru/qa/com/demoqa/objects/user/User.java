@@ -1,21 +1,13 @@
 package guru.qa.com.demoqa.objects.user;
 
-import com.github.javafaker.Faker;
 import guru.qa.com.demoqa.helpers.DateConverter;
-import guru.qa.com.demoqa.objects.user.userObjects.City;
-import guru.qa.com.demoqa.objects.user.userObjects.Gender;
-import guru.qa.com.demoqa.objects.user.userObjects.Hobby;
-import guru.qa.com.demoqa.objects.user.userObjects.State;
-import guru.qa.com.demoqa.objects.user.userObjects.Subject;
-import lombok.*;
-import org.jetbrains.annotations.NotNull;
+import guru.qa.com.demoqa.objects.user.userObjects.*;
+import lombok.Builder;
+import lombok.Data;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -119,11 +111,12 @@ public class User {
 
             } catch (DateTimeParseException ex) {
 
-                System.out.println(ex);
                 Assertions.fail("Некорректный тип даты: \"" + dateOfBirth + "\". Дата должна быть в формате \"dd.MM.yyyy\", где \"dd\",\"MM\",\"yyyy\" - числа. ");
 
             }
+
             return this;
+
         }
     }
 
