@@ -30,8 +30,8 @@ public class RegistrationLocators {
      * @param gender Пол
      * @return Возвращает родителя чекбокса пола
      */
-    public By gender(Gender gender) {
-        return byText(Gender.getGenderValue(gender));
+    public SelenideElement gender(Gender gender) {
+        return $(byText(Gender.getGenderValue(gender)));
     }
 
     /**
@@ -97,6 +97,14 @@ public class RegistrationLocators {
      */
     public SelenideElement subjectName(Subject subject) {
         return $x("//div[contains(@class,'subjects-auto-complete__option') and text()='" + Subject.getSubjectValue(subject) + "']");
+    }
+
+    /**
+     * @param hobbyText Наименование hobby
+     * @return возвращает родителя элемента с наименованием хобби
+     */
+    public SelenideElement hobby(String hobbyText) {
+        return $x(String.format("//*[@id='hobbiesWrapper']//div[./label[text()='%s']]", hobbyText));
     }
 
     /**

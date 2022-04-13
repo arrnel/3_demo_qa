@@ -2,9 +2,12 @@ package guru.qa.com.demoqa.models.registration;
 
 import com.github.javafaker.Faker;
 import guru.qa.com.demoqa.helpers.DateConverter;
+import guru.qa.com.demoqa.helpers.UserHelper;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.objects.user.userObjects.*;
 import guru.qa.com.demoqa.setup.ElementAction;
+import lombok.Builder;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +21,7 @@ import static com.codeborne.selenide.Selenide.*;
 /**
  * Дейстия на странице регистрации пользователя
  */
-public class RegistrationActions{
+public class RegistrationActions {
 
     Faker faker = new Faker();
     ElementAction elementAction = new ElementAction();
@@ -27,15 +30,17 @@ public class RegistrationActions{
 
     /**
      * Заполнение поля "First Name"
+     *
      * @param firstName имя пользователя
      */
+    @NotNull
     public RegistrationActions fillFirstName(String firstName) {
 
-        if (firstName != null) {
-            if (!firstName.equals("")) {
-                elementAction.fillData(locator.firstName(), firstName);
-                log.info("Заполнена фамалия: \"" + firstName + "\".");
-            }
+        if (firstName != null && !firstName.equals("")) {
+
+            elementAction.setValue(locator.firstName(), firstName);
+            log.info("Заполнена фамилия: \"" + firstName + "\".");
+
         }
 
         return this;
@@ -44,15 +49,17 @@ public class RegistrationActions{
 
     /**
      * Заполнение поля "Last Name"
+     *
      * @param lastName фамилия пользователя
      */
+    @NotNull
     public RegistrationActions fillLastName(String lastName) {
 
-        if (lastName != null) {
-            if (!lastName.equals("")) {
-                elementAction.fillData(locator.lastName(), lastName);
-                log.info("Заполнено имя: \"" + lastName + "\".");
-            }
+        if (lastName != null && !lastName.equals("")) {
+
+            elementAction.setValue(locator.lastName(), lastName);
+            log.info("Заполнено имя: \"" + lastName + "\".");
+
         }
 
         return this;
@@ -61,13 +68,17 @@ public class RegistrationActions{
 
     /**
      * Выбор пола пользователя
+     *
      * @param gender пол пользователя
      */
+    @NotNull
     public RegistrationActions selectGender(Gender gender) {
 
         if (gender != null) {
-            $(locator.gender(gender)).click();
+
+            elementAction.click(locator.gender(gender));
             log.info("Заполнен пол: \"" + Gender.getGenderValue(gender) + "\".");
+
         }
 
         return this;
@@ -76,16 +87,16 @@ public class RegistrationActions{
 
     /**
      * Заполнение поля "Email"
+     *
      * @param email почтовый ящик пользователя
      */
+    @NotNull
     public RegistrationActions fillEmail(String email) {
 
-        if (email != null) {
+        if (!email.equals("")) {
 
-            if (!email.equals("")) {
-                elementAction.fillData(locator.email(), email);
-                log.info("Заполнен email: \"" + email + "\".");
-            }
+            elementAction.setValue(locator.email(), email);
+            log.info("Заполнен email: \"" + email + "\".");
 
         }
 
@@ -95,18 +106,16 @@ public class RegistrationActions{
 
     /**
      * Заполнение поля "Mobile(10 Digits)"
+     *
      * @param phoneNumber номер телефона пользователя
      */
+    @NotNull
     public RegistrationActions fillPhoneNumber(String phoneNumber) {
 
-        if (phoneNumber != null) {
+        if (!phoneNumber.equals("")) {
 
-            if (!phoneNumber.equals("")) {
-
-                elementAction.fillData(locator.phoneNumber(), phoneNumber);
-                log.info("Заполнена номер телефона: \"" + phoneNumber + "\".");
-
-            }
+            elementAction.setValue(locator.phoneNumber(), phoneNumber);
+            log.info("Заполнена номер телефона: \"" + phoneNumber + "\".");
 
         }
 
@@ -119,10 +128,12 @@ public class RegistrationActions{
      * Дата передаётся в формате "dd.MM.yyyy" в user.setDateOfBirth.<br/>
      * После этого происходит парсинг дня, месяца и года рождения.<br/>
      * А также формируется дата для проверки на форме после подтверждения
-     * @param day день рождения
+     *
+     * @param day   день рождения
      * @param month месяц рождения
-     * @param year год рождения
+     * @param year  год рождения
      */
+    @NotNull
     public RegistrationActions fillDate(int day, int month, int year) {
 
         if (day != 0 && month != 0 && year != 0) {
@@ -142,7 +153,7 @@ public class RegistrationActions{
      */
     RegistrationActions openCalendar() {
 
-        locator.dateOfBirth().shouldBe(visible).click();
+        elementAction.click(locator.dateOfBirth());
         locator.calendar().shouldBe(visible);
 
         return this;
@@ -151,11 +162,16 @@ public class RegistrationActions{
 
     /**
      * Выбор года в календаре
+     *
      * @param year - год [-999999999 ; 999999999]
      */
+    @NotNull
     RegistrationActions selectYear(int year) {
 
-        locator.yearOfBD().shouldBe(visible).selectOptionByValue(String.valueOf(year));
+        if (year != 0) {
+            locator.yearOfBD().shouldBe(visible).selectOptionByValue(String.valueOf(year));
+            log.info("Выбран год: " + year);
+        }
 
         return this;
 
@@ -163,11 +179,16 @@ public class RegistrationActions{
 
     /**
      * Выбор месяца в календаре
+     *
      * @param month - месяц [1 ; 12]
      */
+    @NotNull
     RegistrationActions selectMonth(int month) {
 
-        locator.monthOfBD().shouldBe(visible).selectOption(month - 1);
+        if (month != 0) {
+            locator.monthOfBD().shouldBe(visible).selectOption(month - 1);
+            log.info("Выбран месяц: " + month);
+        }
 
         return this;
 
@@ -175,12 +196,16 @@ public class RegistrationActions{
 
     /**
      * Выбор дня в рамках текущего месяца
-     * @param dayOfBirth - день [1 ; 31]
+     *
+     * @param day - день [1 ; 31]
      */
-    RegistrationActions selectDayOfBirth(int dayOfBirth) {
+    @NotNull
+    RegistrationActions selectDayOfBirth(int day) {
 
-        locator.dayOfBirth(dayOfBirth).shouldBe(visible).click();
-        log.info("Выбран день рождения");
+        if (day != 0) {
+            elementAction.click(locator.dayOfBirth(day));
+            log.info("Выбран день");
+        }
 
         return this;
 
@@ -195,15 +220,17 @@ public class RegistrationActions{
 
     /**
      * Заполнение поля "Subject"
+     *
      * @param subjects - Список с enum Subject
      */
+    @NotNull
     public RegistrationActions fillSubjects(List<Subject> subjects) {
 
         if (subjects.size() != 0) {
 
             for (Subject subject : subjects) {
-                locator.subject().shouldBe(visible).setValue(Subject.getSubjectValue(subject).substring(0, 3));
-                locator.subjectName(subject).shouldBe(visible).click();
+                elementAction.setValue(locator.subject(), Subject.getSubjectValue(subject).substring(0, 3));
+                elementAction.click(locator.subjectName(subject));
             }
 
         }
@@ -216,15 +243,25 @@ public class RegistrationActions{
 
     /**
      * Выбор "Hobby"
+     *
      * @param hobbies - Список с enum HOBBY
      */
+    @NotNull
     public RegistrationActions selectHobbies(List<Hobby> hobbies) {
 
         if (hobbies.size() != 0) {
+
+            String hobbyText;
+
             for (int i = 0; i <= hobbies.size() - 1; i++) {
-                $x(String.format("//*[@id='hobbiesWrapper']//div[./label[text()='%s']]", Hobby.getHobbyValue(hobbies.get(i)))).click();
+
+                hobbyText = Hobby.getHobbyValue(hobbies.get(i));
+                elementAction.click(locator.hobby(hobbyText));
+
             }
+
             log.info("Заполнены хобби: \"" + hobbies + "\"");
+
         }
 
         return this;
@@ -233,15 +270,17 @@ public class RegistrationActions{
 
     /**
      * Загрузка изображения в "Picture"
+     *
      * @param fileName - Имя изображения с расширением в "/src/test/resources/..."
      */
+    
     public RegistrationActions uploadPicture(String fileName) {
 
-        if (fileName != null) {
-            if (!fileName.equals("")) {
-                elementAction.uploadFile(locator.picture(), "src/test/resources/" + fileName);
-                log.info("Загружена фотография: \"" + fileName + "\".");
-            }
+        if (!fileName.equals("")) {
+
+            elementAction.uploadFile(locator.picture(), "src/test/resources/" + fileName);
+            log.info("Загружена фотография: \"" + fileName + "\".");
+
         }
 
         return this;
@@ -251,16 +290,17 @@ public class RegistrationActions{
 
     /**
      * Заполнение "Address"
+     *
      * @param address - адрес
      */
+    @NotNull
     public RegistrationActions fillAddress(String address) {
 
-        if (address != null) {
-            if (!address.equals("")) {
-                elementAction.fillData(locator.address(), address);
-                log.info("Заполнен адрес: \"" + address + "\".");
-            }
+        if (!address.equals("")) {
+            elementAction.setValue(locator.address(), address);
+            log.info("Заполнен адрес: \"" + address + "\".");
         }
+
 
         return this;
 
@@ -268,14 +308,14 @@ public class RegistrationActions{
 
     /**
      * Заполнение "State"
+     *
      * @param state регион
      */
+    @NotNull
     public RegistrationActions fillState(State state) {
 
-        if (state != null) {
-            elementAction.fillDropDown(locator.state(), State.getStateValue(state));
-            log.info("Выбран регион: \"" + State.getStateValue(state) + "\".");
-        }
+        elementAction.fillDropDown(locator.state(), State.getStateValue(state));
+        log.info("Выбран регион: \"" + State.getStateValue(state) + "\".");
 
         return this;
 
@@ -283,14 +323,15 @@ public class RegistrationActions{
 
     /**
      * Заполнение "City"
+     *
      * @param city город
      */
+    @NotNull
     public RegistrationActions fillCity(City city) {
 
-        if (city != null) {
-            elementAction.fillDropDown(locator.city(), City.getCityValue(city));
-            log.info("Выбран город: \"" + City.getCityValue(city) + "\".");
-        }
+        elementAction.fillDropDown(locator.city(), City.getCityValue(city));
+        log.info("Выбран город: \"" + City.getCityValue(city) + "\".");
+
 
         return this;
 
@@ -301,71 +342,46 @@ public class RegistrationActions{
      */
     public RegistrationActions submit() {
 
-        $(byText("Submit")).shouldBe(visible).click();
-
+        elementAction.submit();
         return this;
 
     }
 
     /**
-     *
-     * @return Возвращает рандомный список из списка enum Subject
-     */
-    public List<Subject> getRandomSubjects() {
-
-        List<Subject> subjects = new ArrayList<>(EnumSet.allOf(Subject.class));
-        Collections.shuffle(subjects);
-        subjects = subjects.subList(0, faker.random().nextInt(1, subjects.size()));
-
-        return subjects;
-
-    }
-
-    /**
-     *
-     * @return Возвращает рандомный список из списка enum Hobby
-     */
-    public List<Hobby> getRandomHobbies() {
-
-        List<Hobby> hobbies = new ArrayList<>(EnumSet.allOf(Hobby.class));
-        Collections.shuffle(hobbies);
-        hobbies = hobbies.subList(0, faker.random().nextInt(1, hobbies.size()));
-
-        return hobbies;
-
-    }
-
-    /**
      * Проверка введеных данных и данных на форме
+     *
      * @param user - Объект пользователя с регистрационными данными
      */
+    @NotNull
     public void assertFormValues(User user) {
 
         DateConverter convertDate = new DateConverter();
+        UserHelper userHelper= new UserHelper();
+
+        log.info("Проверяем соответствие введеных значений с результатами на форме.");
 
         String expectedName = String.format("%s %s", user.getFirstName(), user.getLastName()),
                 expectedEmail = user.getEmail(),
                 expectedGender = Gender.getGenderValue(user.getGender()),
                 expectedMobile = user.getPhoneNumber(),
                 expectedDateOfBirth = convertDate.englishFormalFormat(convertDate.stringToLocalDate(user.getDateOfBirth(), "dd.MM.yyyy")),
-                expectedSubjects = user.getAllSubjectsInString(user.getSubjects()),
-                expectedHobbies = user.getAllHobbiesInString(user.getHobbies()),
+                expectedSubjects = userHelper.getAllSubjectsInString(user.getSubjects()),
+                expectedHobbies = userHelper.getAllHobbiesInString(user.getHobbies()),
                 expectedPicture = user.getPicture(),
                 expectedAddress = user.getAddress(),
                 expectedStateAndCity = String.format("%s %s", State.getStateValue(user.getState()), City.getCityValue(user.getCity()));
 
-        log.info("Проверяем соответствие введеных значений с результатами на форме.");
 
-        String actualName = locator.modalElementValue("Student Name").shouldBe(visible).getText(),
-                actualEmail = locator.modalElementValue("Student Email").shouldBe(visible).getText(),
-                actualGender = locator.modalElementValue("Gender").shouldBe(visible).getText(),
-                actualPhoneNumber = locator.modalElementValue("Mobile").shouldBe(visible).getText(),
-                actualBD = locator.modalElementValue("Date of Birth").shouldBe(visible).getText(),
-                actualSubjects = locator.modalElementValue("Subjects").shouldBe(visible).getText(),
-                actualHobbies = locator.modalElementValue("Hobbies").shouldBe(visible).getText(),
-                actualPicture = locator.modalElementValue("Picture").shouldBe(visible).getText(),
-                actualAddress = locator.modalElementValue("Address").shouldBe(visible).getText(),
-                actualStateAndCity = locator.modalElementValue("State and City").shouldBe(visible).getText();
+        String actualName = elementAction.getText(locator.modalElementValue("Student Name")),
+                actualEmail = elementAction.getText(locator.modalElementValue("Student Email")),
+                actualGender = elementAction.getText(locator.modalElementValue("Gender")),
+                actualPhoneNumber = elementAction.getText(locator.modalElementValue("Mobile")),
+                actualBD = elementAction.getText(locator.modalElementValue("Date of Birth")),
+                actualSubjects = elementAction.getText(locator.modalElementValue("Subjects")),
+                actualHobbies = elementAction.getText(locator.modalElementValue("Hobbies")),
+                actualPicture = elementAction.getText(locator.modalElementValue("Picture")),
+                actualAddress = elementAction.getText(locator.modalElementValue("Address")),
+                actualStateAndCity = elementAction.getText(locator.modalElementValue("State and City"));
 
         Assertions.assertEquals(expectedName, actualName);
         Assertions.assertEquals(expectedEmail, actualEmail);
