@@ -4,7 +4,7 @@ import com.codeborne.selenide.Selenide;
 import guru.qa.com.demoqa.models.registration.RegistrationActions;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.setup.TestBase;
-import guru.qa.com.demoqa.testCasesData.UsersTemplate;
+import guru.qa.com.demoqa.templates.UsersTemplates;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +16,8 @@ import static com.codeborne.selenide.Selenide.open;
 class FormTests extends TestBase {
 
     RegistrationActions registration;
-    UsersTemplate users = new UsersTemplate();
-    User user = new User();
+    UsersTemplates users = new UsersTemplates();
+    User user;
     final Logger log = LoggerFactory.getLogger(FormTests.class);
 
     @BeforeEach
@@ -29,7 +29,7 @@ class FormTests extends TestBase {
     void testCorrectName() {
 
         //Data
-        user = users.userWithAllCorrectData(user);
+        user = users.userWithAllCorrectData();
 
         //Test
         log.info("Запуск теста");
@@ -57,6 +57,7 @@ class FormTests extends TestBase {
         log.info("Конец теста");
 
     }
+
 
     @AfterEach
     void setupAfterEachTests() {
