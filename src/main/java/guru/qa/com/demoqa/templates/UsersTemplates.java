@@ -16,13 +16,13 @@ import java.util.Random;
  * Шаблоны пользователей
  */
 public class UsersTemplates {
-    User user;
+
     RegistrationActions registration = new RegistrationActions();
 
     /**
      * @return Пользователь с всеми заполнеными корректными и генерируемыми данными
      */
-    public User userWithAllCorrectData() {
+    public User userWithAllCorrectData(User user) {
         Faker faker = new Faker(new Locale("ru"));
 
         String  firstname = faker.name().firstName(),

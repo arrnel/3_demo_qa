@@ -17,19 +17,19 @@ class FormTests extends TestBase {
 
     RegistrationActions registration;
     UsersTemplates users = new UsersTemplates();
-    User user;
     final Logger log = LoggerFactory.getLogger(FormTests.class);
 
     @BeforeEach
     void setupBeforeEachTests() {
+
         open("/automation-practice-form");
     }
 
     @Test
     void testCorrectName() {
-
+        User user = User.builder().build();
         //Data
-        user = users.userWithAllCorrectData();
+        user = users.userWithAllCorrectData(user);
 
         //Test
         log.info("Запуск теста");

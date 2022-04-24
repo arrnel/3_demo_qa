@@ -48,42 +48,6 @@ public class RegistrationLocators {
     }
 
     /**
-     * @return Возвращает поле ввода "Date of Birth"
-     */
-    public SelenideElement dateOfBirth() {
-        return $(byId("dateOfBirthInput"));
-    }
-
-    /**
-     * @return Возвращает селектор "Year"
-     */
-    public SelenideElement yearOfBD() {
-        return $(".react-datepicker__year-select");
-    }
-
-    /**
-     * @return Возвращает селектор "Month"
-     */
-    public SelenideElement monthOfBD() {
-        return $(".react-datepicker__month-select");
-    }
-
-    /**
-     * @param dayOfBirth - день
-     * @return Возвращает локатор дня текущего месяца в календаре
-     */
-    public SelenideElement dayOfBirth(int dayOfBirth) {
-        return $x(String.format("//div[text()='%s' and contains(@class,'react-datepicker__day') and not(contains(@class,'react-datepicker__day--outside-month'))]", dayOfBirth));
-    }
-
-    /**
-     * @return Возвращает календарь
-     */
-    public SelenideElement calendar() {
-        return $x("//div[@class='react-datepicker']");
-    }
-
-    /**
      * @return Возвращает поле ввода "Subject"
      */
     public SelenideElement subject() {
