@@ -26,7 +26,7 @@ class FormTests extends TestBase {
     @BeforeEach
     void setupBeforeEachTests() {
         open("/automation-practice-form");
-        Selenide.zoom(0.75);
+        Selenide.zoom(0.67);
     }
 
     @Test
