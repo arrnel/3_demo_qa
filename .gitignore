@@ -14,7 +14,7 @@ target/
 .settings/org.eclipse.buildship.core.prefs
 .vscode
 /gradle
-/gradlew
+#/gradlew
 /gradlew.bat
 
 # Compiled class file
