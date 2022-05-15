@@ -1,6 +1,7 @@
 package guru.qa.com.demoqa.models.registration;
 
 import guru.qa.com.demoqa.allure.AllureModels;
+import guru.qa.com.demoqa.allure.AttachmentType;
 import guru.qa.com.demoqa.helpers.DateConverter;
 import guru.qa.com.demoqa.helpers.UserHelper;
 import guru.qa.com.demoqa.objects.calendar.Calendar;
@@ -372,8 +373,4 @@ public class RegistrationActions {
 
     }
 
-    public void attachments(String screenshotDescription, String pageDescription) {
-        AllureModels allure = new AllureModels();
-        allure.attachments(screenshotDescription, pageDescription);
-    }
 }

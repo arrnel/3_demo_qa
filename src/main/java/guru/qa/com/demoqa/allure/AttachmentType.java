@@ -1,5 +1,5 @@
 package guru.qa.com.demoqa.allure;
 
 public enum AttachmentType {
-    SCREENSHOT, PAGE
+    SCREENSHOT, PAGE, VIDEO, LOGS
 }

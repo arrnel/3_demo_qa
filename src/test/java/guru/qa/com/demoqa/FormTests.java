@@ -1,6 +1,7 @@
 package guru.qa.com.demoqa;
 
 import com.codeborne.selenide.Selenide;
+import guru.qa.com.demoqa.allure.AllureModels;
 import guru.qa.com.demoqa.models.registration.RegistrationActions;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.setup.TestBase;
@@ -15,6 +16,7 @@ import static com.codeborne.selenide.Selenide.open;
 class FormTests extends TestBase {
 
     RegistrationActions registration;
+    AllureModels allure = new AllureModels();
     UsersTemplates users = new UsersTemplates();
     final Logger log = LoggerFactory.getLogger(FormTests.class);
 
@@ -53,8 +55,6 @@ class FormTests extends TestBase {
         //Assertions
         registration.assertFormValues(user);
 
-        registration.attachments("Скриншот страницы", "Страница");
-
         log.info("Конец теста");
 
     }
@@ -62,6 +62,10 @@ class FormTests extends TestBase {
 
     @AfterEach
     void setupAfterEachTests() {
+        allure.allAttachments("Форма подтверждения",
+                "Скриншот формы подтверждения",
+                "Видео теста",
+                "Логи браузера");
         Selenide.closeWindow();
     }
 

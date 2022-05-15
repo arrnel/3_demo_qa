@@ -1,62 +1,120 @@
 package guru.qa.com.demoqa.allure;
 
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
+import guru.qa.com.demoqa.setup.TestStand;
 import io.qameta.allure.Allure;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+
+import static com.codeborne.selenide.Selenide.sessionId;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static guru.qa.com.demoqa.setup.TestBase.testStand;
+import static org.openqa.selenium.logging.LogType.BROWSER;
 
 public class AllureModels {
 
-    public void attachments(String screenshotName, String pageName) {
-
-        Allure.step("Приложения", () -> {
-
-            Allure.getLifecycle().addAttachment(
-                    screenshotName,
-                    "image/png",
-                    "png",
-                    ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES));
-
-            Allure.getLifecycle().addAttachment(
-                    pageName,
-                    "text/html",
-                    "html",
-                    WebDriverRunner.getWebDriver().getPageSource().getBytes(StandardCharsets.UTF_8));
-
-        });
-
-    }
 
     public void attachment(AttachmentType attachmentType, String attachmentTitle) {
 
         if (attachmentType == AttachmentType.PAGE) {
 
-            Allure.step("Приложение", () ->
+            Allure.step("Страница", () ->
 
-                    io.qameta.allure.Allure.getLifecycle().addAttachment(
+                   Allure.getLifecycle().addAttachment(
                             attachmentTitle,
                             "text/html",
                             "html",
-                            WebDriverRunner.getWebDriver().getPageSource().getBytes(StandardCharsets.UTF_8))
+                            getWebDriver().getPageSource().getBytes(StandardCharsets.UTF_8))
 
             );
 
         } else if (attachmentType == AttachmentType.SCREENSHOT) {
 
-            Allure.step("Приложение", () ->
+            Allure.step("Скриншот страницы", () ->
 
-                    io.qameta.allure.Allure.getLifecycle().addAttachment(
+                    Allure.getLifecycle().addAttachment(
                             attachmentTitle,
                             "image/png",
                             "png",
-                            ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES))
+                            ((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.BYTES))
 
             );
 
+        } else if (attachmentType == AttachmentType.VIDEO) {
+
+            Allure.step("Видео", () -> {
+
+                String videoCode = "<html><body><video width='100%' height='100%' controls autoplay><source src='"
+                        + getVideoUrl(getSessionId())
+                        + "' type='video/mp4'></video></body></html>";
+
+                Allure.getLifecycle().addAttachment(
+                        attachmentTitle,
+                        "text/html",
+                        ".html",
+                        videoCode.getBytes(StandardCharsets.UTF_8));
+            });
+
+        } else if (attachmentType == AttachmentType.LOGS){
+
+            Allure.step("Логи браузера", () -> {
+
+                String browserLogs = String.join("\n", Selenide.getWebDriverLogs(BROWSER));
+
+                Allure.getLifecycle().addAttachment(
+                        attachmentTitle,
+                        "text/plain",
+                        ".html",
+                        browserLogs.getBytes(StandardCharsets.UTF_8));
+            });
+
         }
+
+    }
+
+    String getSessionId(){
+        if (testStand == TestStand.REMOTE){
+            return ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
+        }else{
+            return sessionId().toString();
+        }
+    }
+
+    @NotNull
+    URL getVideoUrl(String sessionId) {
+        String videoUrl = "";
+        if (testStand == TestStand.REMOTE) {
+            videoUrl = "https://selenoid.autotests.cloud/video/" + sessionId + ".mp4";
+        } else{
+            // Пока локально не сохраняет селеноид видео
+            videoUrl = "";
+        }
+
+        try {
+            return new URL(videoUrl.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    public void allAttachments(String pageTitle, String screenshotTitle, String videoTitle, String logsTitle) {
+
+        Allure.step("Приложения", () -> {
+            attachment(AttachmentType.PAGE, pageTitle);
+            attachment(AttachmentType.SCREENSHOT, screenshotTitle);
+            attachment(AttachmentType.VIDEO, videoTitle);
+            attachment(AttachmentType.LOGS, logsTitle);
+        });
 
     }
 
