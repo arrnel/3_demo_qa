@@ -33,6 +33,33 @@ public class RegistrationActions {
     RegistrationLocators locator = new RegistrationLocators();
 
     /**
+     * Заполнение данных пользователя
+     *
+     * @param user пользователь
+     * @return
+     */
+    public RegistrationActions fillUserInformation(User user) {
+
+        Allure.step("Заполнение данных пользователя", () -> {
+            fillFirstName(user.getFirstName());
+            fillLastName(user.getLastName());
+            selectGender(user.getGender());
+            fillEmail(user.getEmail());
+            fillPhoneNumber(user.getPhoneNumber());
+            fillDate(user.getDayOfBirth(), user.getMonthOfBirth(), user.getYearOfBirth());
+            fillSubjects(user.getSubjects());
+            selectHobbies(user.getHobbies());
+            uploadPicture(user.getPicture());
+            fillAddress(user.getAddress());
+            fillState(user.getState());
+            fillCity(user.getCity());
+        });
+
+        return this;
+
+    }
+
+    /**
      * Заполнение поля "First Name"
      *
      * @param firstName имя пользователя
@@ -381,13 +408,13 @@ public class RegistrationActions {
     }
 
     public void removeBanners() {
-        if($("footer").is(Condition.visible)){
+        if ($("footer").is(Condition.visible)) {
             executeJavaScript("$('footer').remove()");
         }
         if ($("#fixedban").is(Condition.visible)) {
             executeJavaScript("$('#fixedban').remove()");
         }
-        if($(byText("Submit")).is(Condition.not(Condition.visible))){
+        if ($(byText("Submit")).is(Condition.not(Condition.visible))) {
             Selenide.zoom(0.75);
         }
     }

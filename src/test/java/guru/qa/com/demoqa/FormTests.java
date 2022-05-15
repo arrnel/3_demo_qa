@@ -18,7 +18,7 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 @Tag("demo_qa")
 class FormTests extends TestBase {
 
-    RegistrationActions registration;
+    RegistrationActions registration = new RegistrationActions();
     AllureModels allure = new AllureModels();
     UsersTemplates users = new UsersTemplates();
     final Logger log = LoggerFactory.getLogger(FormTests.class);
@@ -26,6 +26,7 @@ class FormTests extends TestBase {
     @BeforeEach
     void setupBeforeEachTests() {
         open("/automation-practice-form");
+        registration.removeBanners();
     }
 
     @Test
@@ -38,24 +39,7 @@ class FormTests extends TestBase {
         //Test
         log.info("Запуск теста");
 
-        registration = new RegistrationActions();
-
-        registration.removeBanners();
-
-        registration.
-                fillFirstName(user.getFirstName()).
-                fillLastName(user.getLastName()).
-                selectGender(user.getGender()).
-                fillEmail(user.getEmail()).
-                fillPhoneNumber(user.getPhoneNumber()).
-                fillDate(user.getDayOfBirth(), user.getMonthOfBirth(), user.getYearOfBirth()).
-                fillSubjects(user.getSubjects()).
-                selectHobbies(user.getHobbies()).
-                uploadPicture(user.getPicture()).
-                fillAddress(user.getAddress()).
-                fillState(user.getState()).
-                fillCity(user.getCity()).
-                submit();
+        registration.fillUserInformation(user).submit();
 
         //Assertions
         registration.assertFormValues(user);
