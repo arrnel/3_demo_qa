@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static com.codeborne.selenide.Selenide.executeJavaScript;
+
 /**
  * Дейстия на странице регистрации пользователя
  */
@@ -373,4 +375,8 @@ public class RegistrationActions {
 
     }
 
+    public void removeBanners() {
+        executeJavaScript("$('footer').remove()");
+        executeJavaScript("$('#fixedban').remove()");
+    }
 }
