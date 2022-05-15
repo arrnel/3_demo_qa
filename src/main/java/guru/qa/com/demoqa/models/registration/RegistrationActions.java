@@ -1,5 +1,7 @@
 package guru.qa.com.demoqa.models.registration;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import guru.qa.com.demoqa.allure.AllureModels;
 import guru.qa.com.demoqa.allure.AttachmentType;
 import guru.qa.com.demoqa.helpers.DateConverter;
@@ -14,8 +16,11 @@ import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.List;
 
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 /**
@@ -376,7 +381,14 @@ public class RegistrationActions {
     }
 
     public void removeBanners() {
-        executeJavaScript("$('footer').remove()");
-        executeJavaScript("$('#fixedban').remove()");
+        if($("footer").is(Condition.visible)){
+            executeJavaScript("$('footer').remove()");
+        }
+        if ($("#fixedban").is(Condition.visible)) {
+            executeJavaScript("$('#fixedban').remove()");
+        }
+        if($(byText("Submit")).is(Condition.not(Condition.visible))){
+            Selenide.zoom(0.75);
+        }
     }
 }
