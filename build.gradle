@@ -66,3 +66,10 @@ compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+task demo_qa(type:Test){
+    useJUnitPlatform{
+        includeTags "demo_qa"
+//        excludeTags "someTag"
+    }
+}

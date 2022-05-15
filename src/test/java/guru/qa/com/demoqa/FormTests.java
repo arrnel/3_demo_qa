@@ -5,15 +5,13 @@ import guru.qa.com.demoqa.models.registration.RegistrationActions;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.setup.TestBase;
 import guru.qa.com.demoqa.templates.UsersTemplates;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.codeborne.selenide.Selenide.open;
 
+@Tag("demo_qa")
 class FormTests extends TestBase {
 
     RegistrationActions registration;
@@ -22,7 +20,6 @@ class FormTests extends TestBase {
 
     @BeforeEach
     void setupBeforeEachTests() {
-
         open("/automation-practice-form");
     }
 
