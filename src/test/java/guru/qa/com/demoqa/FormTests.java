@@ -26,7 +26,6 @@ class FormTests extends TestBase {
     @BeforeEach
     void setupBeforeEachTests() {
         open("/automation-practice-form");
-        registration.removeBanners();
     }
 
     @Test
@@ -40,6 +39,8 @@ class FormTests extends TestBase {
         log.info("Запуск теста");
 
         registration = new RegistrationActions();
+
+        registration.removeBanners();
 
         registration.
                 fillFirstName(user.getFirstName()).
