@@ -407,15 +407,22 @@ public class RegistrationActions {
 
     }
 
+    /**
+     * Закрытие баннеров на странице
+     */
     public void removeBanners() {
-        if ($("footer").is(Condition.visible)) {
-            executeJavaScript("$('footer').remove()");
-        }
-        if ($("#fixedban").is(Condition.visible)) {
-            executeJavaScript("$('#fixedban').remove()");
-        }
-        if ($(byText("Submit")).is(Condition.not(Condition.visible))) {
-            Selenide.zoom(0.75);
-        }
+
+        Allure.step("Предусловие закрытия баннеров", () -> {
+            if ($("footer").is(Condition.visible)) {
+                executeJavaScript("$('footer').remove()");
+            }
+            if ($("#fixedban").is(Condition.visible)) {
+                executeJavaScript("$('#fixedban').remove()");
+            }
+            if ($(byText("Submit")).is(Condition.not(Condition.visible))) {
+                Selenide.zoom(0.75);
+            }
+        });
+
     }
 }
