@@ -2,6 +2,7 @@ package guru.qa.com.demoqa.objects.calendar;
 
 import guru.qa.com.demoqa.models.registration.RegistrationActions;
 import guru.qa.com.demoqa.setup.ElementAction;
+import io.qameta.allure.Allure;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,8 +46,10 @@ public class Calendar {
      */
     Calendar openCalendar() {
 
-        elementAction.click(locator.dateOfBirth());
-        locator.calendar().shouldBe(visible);
+        Allure.step("Открыть календарь", () -> {
+            elementAction.click(locator.dateOfBirth());
+            locator.calendar().shouldBe(visible);
+        });
 
         return this;
 
@@ -61,7 +64,11 @@ public class Calendar {
     Calendar selectYear(int year) {
 
         if (year != 0) {
-            locator.yearOfBD().shouldBe(visible).selectOptionByValue(String.valueOf(year));
+
+            Allure.step("Выбрать год: " + year, () ->
+                    locator.yearOfBD().shouldBe(visible).selectOptionByValue(String.valueOf(year))
+            );
+
             log.info("Выбран год: " + year);
         }
 
@@ -78,7 +85,11 @@ public class Calendar {
     Calendar selectMonth(int month) {
 
         if (month != 0) {
-            locator.monthOfBD().shouldBe(visible).selectOption(month - 1);
+
+            Allure.step("Выбрать месяц: " + month, () ->
+                    locator.monthOfBD().shouldBe(visible).selectOption(month - 1)
+            );
+
             log.info("Выбран месяц: " + month);
         }
 
@@ -95,7 +106,11 @@ public class Calendar {
     Calendar selectDayOfBirth(int day) {
 
         if (day != 0) {
-            elementAction.click(locator.dayOfBirth(day));
+
+            Allure.step("Выбрать день: " + day, () ->
+                    elementAction.click(locator.dayOfBirth(day))
+            );
+
             log.info("Выбран день");
         }
 

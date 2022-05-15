@@ -7,6 +7,7 @@ import guru.qa.com.demoqa.setup.TestBase;
 import guru.qa.com.demoqa.templates.UsersTemplates;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ class FormTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Проверка заполнения формы demoqa")
     void testCorrectName() {
         User user = User.builder().build();
         //Data
@@ -53,6 +55,8 @@ class FormTests extends TestBase {
 
         //Assertions
         registration.assertFormValues(user);
+
+        registration.attachments("Скриншот страницы", "Страница");
 
         log.info("Конец теста");
 
