@@ -103,6 +103,7 @@ public class RegistrationLocators {
      * @return Возвращает элемент значения от label
      */
     public SelenideElement modalElementValue(String variable) {
-        return $x("//div[@class='modal-body']//td[text()='" + variable + "']/following-sibling::td");
+        return $x("//div[@class='modal-body']//td[text()='" + variable + "']/following-sibling::td")
+                .as("Значение поля '"+ variable +"' в окне подтверждения");
     }
 }

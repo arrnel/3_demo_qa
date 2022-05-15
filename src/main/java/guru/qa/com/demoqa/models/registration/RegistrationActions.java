@@ -15,15 +15,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Selenide.$;
-
 /**
  * Дейстия на странице регистрации пользователя
  */
 public class RegistrationActions {
 
-    ElementAction elementAction = new ElementAction();
     final Logger log = LoggerFactory.getLogger(RegistrationActions.class);
+    ElementAction elementAction = new ElementAction();
     RegistrationLocators locator = new RegistrationLocators();
 
     /**
@@ -328,41 +326,45 @@ public class RegistrationActions {
 
         log.info("Проверяем соответствие введеных значений с результатами на форме.");
 
-        String expectedName = String.format("%s %s", user.getFirstName(), user.getLastName()),
-                expectedEmail = user.getEmail(),
-                expectedGender = Gender.getGenderValue(user.getGender()),
-                expectedMobile = user.getPhoneNumber(),
-                expectedDateOfBirth = convertDate.englishFormalFormat(convertDate.stringToLocalDate(user.getDateOfBirth(), "dd.MM.yyyy")),
-                expectedSubjects = userHelper.getAllSubjectsInString(user.getSubjects()),
-                expectedHobbies = userHelper.getAllHobbiesInString(user.getHobbies()),
-                expectedPicture = user.getPicture(),
-                expectedAddress = user.getAddress(),
-                expectedStateAndCity = String.format("%s %s", State.getStateValue(user.getState()), City.getCityValue(user.getCity()));
-
-
-        String actualName = elementAction.getText(locator.modalElementValue("Student Name")),
-                actualEmail = elementAction.getText(locator.modalElementValue("Student Email")),
-                actualGender = elementAction.getText(locator.modalElementValue("Gender")),
-                actualPhoneNumber = elementAction.getText(locator.modalElementValue("Mobile")),
-                actualBD = elementAction.getText(locator.modalElementValue("Date of Birth")),
-                actualSubjects = elementAction.getText(locator.modalElementValue("Subjects")),
-                actualHobbies = elementAction.getText(locator.modalElementValue("Hobbies")),
-                actualPicture = elementAction.getText(locator.modalElementValue("Picture")),
-                actualAddress = elementAction.getText(locator.modalElementValue("Address")),
-                actualStateAndCity = elementAction.getText(locator.modalElementValue("State and City"));
-
         Allure.step("Проверка данных формы: ", () -> {
 
-            Assertions.assertEquals(expectedName, actualName);
-            Assertions.assertEquals(expectedEmail, actualEmail);
-            Assertions.assertEquals(expectedGender, actualGender);
-            Assertions.assertEquals(expectedMobile, actualPhoneNumber);
-            Assertions.assertEquals(expectedDateOfBirth, actualBD);
-            Assertions.assertEquals(expectedSubjects, actualSubjects);
-            Assertions.assertEquals(expectedHobbies, actualHobbies);
-            Assertions.assertEquals(expectedPicture, actualPicture);
-            Assertions.assertEquals(expectedAddress, actualAddress);
-            Assertions.assertEquals(expectedStateAndCity, actualStateAndCity);
+            String expectedName = String.format("%s %s", user.getFirstName(), user.getLastName()),
+                    expectedEmail = user.getEmail(),
+                    expectedGender = Gender.getGenderValue(user.getGender()),
+                    expectedMobile = user.getPhoneNumber(),
+                    expectedDateOfBirth = convertDate.englishFormalFormat(convertDate.stringToLocalDate(user.getDateOfBirth(), "dd.MM.yyyy")),
+                    expectedSubjects = userHelper.getAllSubjectsInString(user.getSubjects()),
+                    expectedHobbies = userHelper.getAllHobbiesInString(user.getHobbies()),
+                    expectedPicture = user.getPicture(),
+                    expectedAddress = user.getAddress(),
+                    expectedStateAndCity = String.format("%s %s", State.getStateValue(user.getState()), City.getCityValue(user.getCity()));
+
+
+            String actualName = elementAction.getText(locator.modalElementValue("Student Name")),
+                    actualEmail = elementAction.getText(locator.modalElementValue("Student Email")),
+                    actualGender = elementAction.getText(locator.modalElementValue("Gender")),
+                    actualPhoneNumber = elementAction.getText(locator.modalElementValue("Mobile")),
+                    actualBD = elementAction.getText(locator.modalElementValue("Date of Birth")),
+                    actualSubjects = elementAction.getText(locator.modalElementValue("Subjects")),
+                    actualHobbies = elementAction.getText(locator.modalElementValue("Hobbies")),
+                    actualPicture = elementAction.getText(locator.modalElementValue("Picture")),
+                    actualAddress = elementAction.getText(locator.modalElementValue("Address")),
+                    actualStateAndCity = elementAction.getText(locator.modalElementValue("State and City"));
+
+
+            Assertions.assertAll("Проверка данных формы: ", () -> {
+                Assertions.assertEquals(expectedName, actualName);
+                Assertions.assertEquals(expectedEmail, actualEmail);
+                Assertions.assertEquals(expectedGender, actualGender);
+                Assertions.assertEquals(expectedMobile, actualPhoneNumber);
+                Assertions.assertEquals(expectedDateOfBirth, actualBD);
+                Assertions.assertEquals(expectedSubjects, actualSubjects);
+                Assertions.assertEquals(expectedHobbies, actualHobbies);
+                Assertions.assertEquals(expectedPicture, actualPicture);
+                Assertions.assertEquals(expectedAddress, actualAddress);
+                Assertions.assertEquals(expectedStateAndCity, actualStateAndCity);
+            });
+
 
         });
 
