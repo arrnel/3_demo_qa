@@ -15,7 +15,7 @@ target/
 .vscode
 /gradle
 #/gradlew
-/gradlew.bat
+#/gradlew.bat
 
 # Compiled class file
 *.class
