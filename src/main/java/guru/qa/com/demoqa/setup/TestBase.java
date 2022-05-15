@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 public class TestBase {
 
-    public static TestStand testStand = TestStand.LOCAL;
+    public static TestStand testStand = TestStand.REMOTE;
 
     final Logger log = LoggerFactory.getLogger(TestBase.class);
 
