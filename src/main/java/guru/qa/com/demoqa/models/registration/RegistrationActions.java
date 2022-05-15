@@ -1,11 +1,13 @@
 package guru.qa.com.demoqa.models.registration;
 
+import guru.qa.com.demoqa.allure.AllureModels;
 import guru.qa.com.demoqa.helpers.DateConverter;
 import guru.qa.com.demoqa.helpers.UserHelper;
 import guru.qa.com.demoqa.objects.calendar.Calendar;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.objects.user.userObjects.*;
 import guru.qa.com.demoqa.setup.ElementAction;
+import io.qameta.allure.Allure;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
@@ -13,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selenide.$;
 
 /**
@@ -36,7 +36,10 @@ public class RegistrationActions {
 
         if (firstName != null && !firstName.equals("")) {
 
-            elementAction.setValue(locator.firstName(), firstName);
+            Allure.step("Заполнить 'First Name': " + firstName, () ->
+                    elementAction.setValue(locator.firstName(), firstName)
+            );
+
             log.info("Заполнена фамилия: \"" + firstName + "\".");
 
         }
@@ -55,7 +58,9 @@ public class RegistrationActions {
 
         if (lastName != null && !lastName.equals("")) {
 
-            elementAction.setValue(locator.lastName(), lastName);
+            Allure.step("Заполнить 'Last Name': " + lastName, () ->
+                    elementAction.setValue(locator.lastName(), lastName)
+            );
             log.info("Заполнено имя: \"" + lastName + "\".");
 
         }
@@ -74,8 +79,13 @@ public class RegistrationActions {
 
         if (gender != null) {
 
-            elementAction.click(locator.gender(gender));
-            log.info("Заполнен пол: \"" + Gender.getGenderValue(gender) + "\".");
+            String genderText = Gender.getGenderValue(gender);
+
+            Allure.step("Заполнить 'Gender': " + genderText, () ->
+                    elementAction.click(locator.gender(gender))
+            );
+
+            log.info("Заполнен пол: \"" + genderText + "\".");
 
         }
 
@@ -93,7 +103,10 @@ public class RegistrationActions {
 
         if (!email.equals("")) {
 
-            elementAction.setValue(locator.email(), email);
+            Allure.step("Заполнить 'Email': " + email, () ->
+                    elementAction.setValue(locator.email(), email)
+            );
+
             log.info("Заполнен email: \"" + email + "\".");
 
         }
@@ -112,7 +125,10 @@ public class RegistrationActions {
 
         if (!phoneNumber.equals("")) {
 
-            elementAction.setValue(locator.phoneNumber(), phoneNumber);
+            Allure.step("Заполнить 'Mobile': " + phoneNumber, () ->
+                    elementAction.setValue(locator.phoneNumber(), phoneNumber)
+            );
+
             log.info("Заполнена номер телефона: \"" + phoneNumber + "\".");
 
         }
@@ -120,7 +136,6 @@ public class RegistrationActions {
         return this;
 
     }
-
 
 
     /**
@@ -133,15 +148,14 @@ public class RegistrationActions {
     @NotNull
     public RegistrationActions fillDate(int day, int month, int year) {
 
-        Calendar calendar = new Calendar();
-        calendar.fillDate(day, month, year);
+        Allure.step(String.format("Заполнить 'Date of Birth': %s.%s.%s", day, month, year), () -> {
+            Calendar calendar = new Calendar();
+            calendar.fillDate(day, month, year);
+        });
 
         return this;
 
     }
-
-
-
 
 
     /**
@@ -154,10 +168,14 @@ public class RegistrationActions {
 
         if (subjects.size() != 0) {
 
-            for (Subject subject : subjects) {
-                elementAction.setValue(locator.subject(), Subject.getSubjectValue(subject).substring(0, 3));
-                elementAction.click(locator.subjectName(subject));
-            }
+            Allure.step("Заполнить Subjects: " + subjects, () -> {
+
+                for (Subject subject : subjects) {
+                    elementAction.setValue(locator.subject(), Subject.getSubjectValue(subject).substring(0, 3));
+                    elementAction.click(locator.subjectName(subject));
+                }
+
+            });
 
         }
 
@@ -177,14 +195,18 @@ public class RegistrationActions {
 
         if (hobbies.size() != 0) {
 
-            String hobbyText;
 
-            for (int i = 0; i <= hobbies.size() - 1; i++) {
+            Allure.step("Выбрать hobby(-es): " + hobbies, () -> {
 
-                hobbyText = Hobby.getHobbyValue(hobbies.get(i));
-                elementAction.click(locator.hobby(hobbyText));
+                String hobbyText;
+                for (int i = 0; i <= hobbies.size() - 1; i++) {
 
-            }
+                    hobbyText = Hobby.getHobbyValue(hobbies.get(i));
+                    elementAction.click(locator.hobby(hobbyText));
+
+                }
+
+            });
 
             log.info("Заполнены хобби: \"" + hobbies + "\"");
 
@@ -204,7 +226,10 @@ public class RegistrationActions {
 
         if (!fileName.equals("")) {
 
-            elementAction.uploadFile(locator.picture(), "src/test/resources/" + fileName);
+            Allure.step("Загрузить фотографию", () ->
+                    elementAction.uploadFile(locator.picture(), "src/test/resources/" + fileName)
+            );
+
             log.info("Загружена фотография: \"" + fileName + "\".");
 
         }
@@ -223,7 +248,11 @@ public class RegistrationActions {
     public RegistrationActions fillAddress(String address) {
 
         if (!address.equals("")) {
-            elementAction.setValue(locator.address(), address);
+
+            Allure.step("Заполнить адрес: " + address, () ->
+                    elementAction.setValue(locator.address(), address)
+            );
+
             log.info("Заполнен адрес: \"" + address + "\".");
         }
 
@@ -240,8 +269,13 @@ public class RegistrationActions {
     @NotNull
     public RegistrationActions fillState(State state) {
 
-        elementAction.fillDropDown(locator.state(), State.getStateValue(state));
-        log.info("Выбран регион: \"" + State.getStateValue(state) + "\".");
+        String stateText = State.getStateValue(state);
+
+        Allure.step("Выбрать State: " + stateText, () ->
+                elementAction.fillDropDown(locator.state(), stateText)
+        );
+
+        log.info("Выбран регион: \"" + stateText + "\".");
 
         return this;
 
@@ -255,8 +289,13 @@ public class RegistrationActions {
     @NotNull
     public RegistrationActions fillCity(City city) {
 
-        elementAction.fillDropDown(locator.city(), City.getCityValue(city));
-        log.info("Выбран город: \"" + City.getCityValue(city) + "\".");
+        String cityText = City.getCityValue(city);
+
+        Allure.step("Выбрать City: " + cityText, () ->
+                elementAction.fillDropDown(locator.city(), cityText)
+        );
+
+        log.info("Выбран город: \"" + cityText + "\".");
 
 
         return this;
@@ -268,7 +307,10 @@ public class RegistrationActions {
      */
     public RegistrationActions submit() {
 
-        elementAction.submit();
+        Allure.step("Подтверждение", () ->
+                elementAction.submit()
+        );
+
         return this;
 
     }
@@ -296,7 +338,6 @@ public class RegistrationActions {
                 expectedPicture = user.getPicture(),
                 expectedAddress = user.getAddress(),
                 expectedStateAndCity = String.format("%s %s", State.getStateValue(user.getState()), City.getCityValue(user.getCity()));
-                expectedStateAndCity = String.format("%s %s", State.getStateValue(user.getState()), City.getCityValue(user.getCity()));
 
 
         String actualName = elementAction.getText(locator.modalElementValue("Student Name")),
@@ -310,18 +351,27 @@ public class RegistrationActions {
                 actualAddress = elementAction.getText(locator.modalElementValue("Address")),
                 actualStateAndCity = elementAction.getText(locator.modalElementValue("State and City"));
 
-        Assertions.assertEquals(expectedName, actualName);
-        Assertions.assertEquals(expectedEmail, actualEmail);
-        Assertions.assertEquals(expectedGender, actualGender);
-        Assertions.assertEquals(expectedMobile, actualPhoneNumber);
-        Assertions.assertEquals(expectedDateOfBirth, actualBD);
-        Assertions.assertEquals(expectedSubjects, actualSubjects);
-        Assertions.assertEquals(expectedHobbies, actualHobbies);
-        Assertions.assertEquals(expectedPicture, actualPicture);
-        Assertions.assertEquals(expectedAddress, actualAddress);
-        Assertions.assertEquals(expectedStateAndCity, actualStateAndCity);
+        Allure.step("Проверка данных формы: ", () -> {
+
+            Assertions.assertEquals(expectedName, actualName);
+            Assertions.assertEquals(expectedEmail, actualEmail);
+            Assertions.assertEquals(expectedGender, actualGender);
+            Assertions.assertEquals(expectedMobile, actualPhoneNumber);
+            Assertions.assertEquals(expectedDateOfBirth, actualBD);
+            Assertions.assertEquals(expectedSubjects, actualSubjects);
+            Assertions.assertEquals(expectedHobbies, actualHobbies);
+            Assertions.assertEquals(expectedPicture, actualPicture);
+            Assertions.assertEquals(expectedAddress, actualAddress);
+            Assertions.assertEquals(expectedStateAndCity, actualStateAndCity);
+
+        });
 
         log.info("Ошибок нет. Форма заполнена корректно.");
 
+    }
+
+    public void attachments(String screenshotDescription, String pageDescription) {
+        AllureModels allure = new AllureModels();
+        allure.attachments(screenshotDescription, pageDescription);
     }
 }
