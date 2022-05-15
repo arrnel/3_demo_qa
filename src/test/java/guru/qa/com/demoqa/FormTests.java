@@ -26,12 +26,7 @@ class FormTests extends TestBase {
     @BeforeEach
     void setupBeforeEachTests() {
         open("/automation-practice-form");
-
-        String browserSize = getWebDriver().manage().window().getSize().toString();
-        Allure.step("Разрешение браузера = '" + browserSize + "'",()->
-                System.out.println("Привет!")
-        );
-
+        Selenide.zoom(0.75);
     }
 
     @Test
