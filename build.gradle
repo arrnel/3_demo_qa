@@ -51,6 +51,8 @@ allure {
 }
 
 test {
+    systemProperties(System.getProperties()) // Позволяет передавать в тест системные проперти. Передаются '-Dbrowser = opera', а читаются 'System.getProperty("browser");'
+
     useJUnitPlatform()
 
     testLogging{
@@ -67,7 +69,7 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-task demo_qa(type:Test){
+task demo_qa(type:Test){                    // Позволяет запускать тесты с отдельными тегами. Например, запуск тестов c наличием тега "demo_qa", и отсутствующим "someTag"
     useJUnitPlatform{
         includeTags "demo_qa"
 //        excludeTags "someTag"

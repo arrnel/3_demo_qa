@@ -30,32 +30,41 @@ public class TestBase {
         Configuration.holdBrowserOpen = false; // Браузер не будет закрываться по окончанию теста
         Configuration.baseUrl = "https://demoqa.com";
 
-
-        if (testStand == TestStand.REMOTE){
-            remoteWebDriver();
-        }else if(testStand == TestStand.LOCAL){
-            localWebDriver();
-        }else{
+        if (testStand == TestStand.REMOTE) {
+            new TestBase().remoteWebDriver();
+        } else if (testStand == TestStand.LOCAL) {
+            new TestBase().localWebDriver();
+        } else {
             throw new IllegalArgumentException();
         }
 
     }
 
-    static void remoteWebDriver(){
+    void remoteWebDriver() {
 
-        Configuration.browserSize = "1920x1080";
-        Configuration.browser = "chrome";
-        Configuration.browserVersion = "100.0";
-        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+        Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
+        Configuration.browser = System.getProperty("browser", "chrome");
+        Configuration.browserVersion = System.getProperty("browserVersion", "100.0");
+
+        getRemoteURL();
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("enableVNC", true);
-        capabilities.setCapability("enableVideo", true);
+        capabilities.setCapability("enableVNC", System.getProperty("vncStatus", "false"));
+        capabilities.setCapability("enableVideo", System.getProperty("videoStatus", "false"));
         Configuration.browserCapabilities = capabilities;
 
     }
 
-    static void localWebDriver(){
+    void getRemoteURL() {
+        String hostRemote = System.getProperty("hostRemote", "localhost");
+        if (hostRemote.equals("localhost")) {
+            Configuration.remote = "https://localhost:4444/wd/hub";
+        } else if (hostRemote.equals("jenkins.autotests.cloud")) {
+            Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub";
+        }
+    }
+
+    void localWebDriver() {
 
         Configuration.browserSize = "2560x1440";
         Configuration.browser = "chrome";
