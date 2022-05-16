@@ -60,6 +60,7 @@ public class TestBase {
         } else if (testEnvironmentProperty.equals("remote")) {
             testEnvironment = TestEnvironment.REMOTE;
         } else {
+            log.warn(testEnvironmentProperty);
             throw new IllegalArgumentException("Некорректное значение 'testEnvironment' = '" + testEnvironmentProperty + "'. " +
                     "Для удаленного браузера = 'remote', для локального = 'local'");
         }

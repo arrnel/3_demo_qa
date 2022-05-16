@@ -17,6 +17,7 @@ def selenideVersion = '6.4.0',
     javaFakerVersion = "1.0.2",
     jetBrainsAnnotationsVersion = '23.0.0',
     lombokVersion = "1.18.24",
+    slf4jVersion = "1.7.36",
     ownerVersion = "1.0.12"
 
 dependencies {
@@ -28,7 +29,8 @@ dependencies {
             "io.qameta.allure:allure-selenide:$allureVersion",
             "org.projectlombok:lombok:$lombokVersion",
             "org.jetbrains:annotations:$jetBrainsAnnotationsVersion",
-            "org.aeonbits.owner:owner:$ownerVersion"
+            "org.aeonbits.owner:owner:$ownerVersion",
+            "org.slf4j:slf4j-simple:$slf4jVersion"
 
     )
 
