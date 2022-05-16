@@ -99,7 +99,7 @@ public class TestBase {
         String url = "";
         if (testEnvironment == TestEnvironment.REMOTE) {
 
-            String hostRemote = System.getProperty("hostRemote  ", "localhost");
+            String hostRemote = System.getProperty("hostRemote", "localhost");
 
             if (hostRemote.equals("localhost")) {
                 url =  "https://localhost:4444/wd/hub";
