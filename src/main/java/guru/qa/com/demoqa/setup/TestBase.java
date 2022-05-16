@@ -1,6 +1,7 @@
 package guru.qa.com.demoqa.setup;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import guru.qa.com.demoqa.config.Credentials;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -48,7 +49,9 @@ public class TestBase {
      */
     @AfterAll
     static void setupAfterAllTests() {
+        Selenide.closeWebDriver();
         new TestBase().log.info("Прогон тестов завершён");
+
     }
 
     TestEnvironment setTestEnvironment() {
