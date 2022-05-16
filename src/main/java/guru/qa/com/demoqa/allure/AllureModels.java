@@ -108,7 +108,7 @@ public class AllureModels {
     URL getVideoUrl(String sessionId) {
         String videoUrl;
         if (testEnv == TestEnvironment.REMOTE) {
-            videoUrl = String.format("https://%s/video/%s.mp4", System.getenv("hostRemote"), sessionId);
+            videoUrl = String.format("https://%s/video/%s.mp4", System.getProperty("hostRemote"), sessionId);
         } else {
             // Пока локально не сохраняет селеноид видео
             videoUrl = "";
