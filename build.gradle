@@ -16,7 +16,8 @@ def selenideVersion = '6.4.0',
     junitVersion = "5.8.2",
     javaFakerVersion = "1.0.2",
     jetBrainsAnnotationsVersion = '23.0.0',
-    lombokVersion = "1.18.24"
+    lombokVersion = "1.18.24",
+    ownerVersion = "1.0.12"
 
 dependencies {
 
@@ -26,7 +27,8 @@ dependencies {
             "com.github.javafaker:javafaker:$javaFakerVersion",
             "io.qameta.allure:allure-selenide:$allureVersion",
             "org.projectlombok:lombok:$lombokVersion",
-            "org.jetbrains:annotations:$jetBrainsAnnotationsVersion"
+            "org.jetbrains:annotations:$jetBrainsAnnotationsVersion",
+            "org.aeonbits.owner:owner:$ownerVersion"
 
     )
 
@@ -51,12 +53,14 @@ allure {
 }
 
 test {
-    systemProperties(System.getProperties()) // Позволяет передавать в тест системные проперти. Передаются '-Dbrowser = opera', а читаются 'System.getProperty("browser");'
+
+    systemProperties(System.getProperties())
+    // Позволяет передавать в тест системные проперти. Передаются '-Dbrowser = opera', а читаются 'System.getProperty("browser");'
 
     useJUnitPlatform()
 
-    testLogging{
-        lifecycle{
+    testLogging {
+        lifecycle {
             events "started", "skipped", "failed", "standard_error", "standard_out"
             exceptionFormat "short"
         }
@@ -69,8 +73,11 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-task demo_qa(type:Test){                    // Позволяет запускать тесты с отдельными тегами. Например, запуск тестов c наличием тега "demo_qa", и отсутствующим "someTag"
-    useJUnitPlatform{
+test
+
+task demo_qa(type: Test) {
+    // Позволяет запускать тесты с отдельными тегами. Например, запуск тестов c наличием тега "demo_qa", и отсутствующим "someTag"
+    useJUnitPlatform {
         includeTags "demo_qa"
 //        excludeTags "someTag"
     }

@@ -6,14 +6,11 @@ import guru.qa.com.demoqa.models.registration.RegistrationActions;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.setup.TestBase;
 import guru.qa.com.demoqa.templates.UsersTemplates;
-import io.qameta.allure.Allure;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.Dimension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 @Tag("demo_qa")
 class FormTests extends TestBase {
@@ -32,8 +29,9 @@ class FormTests extends TestBase {
     @Test
     @DisplayName("Проверка заполнения формы demoqa")
     void testCorrectName() {
-        User user = User.builder().build();
+
         //Data
+        User user = User.builder().build();
         user = users.userWithAllCorrectData(user);
 
         //Test

@@ -2,8 +2,8 @@ package guru.qa.com.demoqa.allure;
 
 
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.WebDriverRunner;
-import guru.qa.com.demoqa.setup.TestStand;
+import guru.qa.com.demoqa.setup.TestBase;
+import guru.qa.com.demoqa.setup.TestEnvironment;
 import io.qameta.allure.Allure;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.OutputType;
@@ -16,11 +16,11 @@ import java.nio.charset.StandardCharsets;
 
 import static com.codeborne.selenide.Selenide.sessionId;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
-import static guru.qa.com.demoqa.setup.TestBase.testStand;
 import static org.openqa.selenium.logging.LogType.BROWSER;
 
 public class AllureModels {
 
+    TestEnvironment testEnv = new TestBase().getTestEnvironment();
 
     public void attachment(AttachmentType attachmentType, String attachmentTitle) {
 
@@ -28,7 +28,7 @@ public class AllureModels {
 
             Allure.step("Страница", () ->
 
-                   Allure.getLifecycle().addAttachment(
+                    Allure.getLifecycle().addAttachment(
                             attachmentTitle,
                             "text/html",
                             "html",
@@ -52,18 +52,18 @@ public class AllureModels {
 
             Allure.step("Видео", () -> {
 
-                String videoCode = "<html><body><video width='100%' height='100%' controls autoplay><source src='"
-                        + getVideoUrl(getSessionId())
-                        + "' type='video/mp4'></video></body></html>";
+                String videoCode = "";
+
+                String htmlVideoCode = getHTMLVideoCode();
 
                 Allure.getLifecycle().addAttachment(
                         attachmentTitle,
                         "text/html",
                         ".html",
-                        videoCode.getBytes(StandardCharsets.UTF_8));
+                        htmlVideoCode.getBytes(StandardCharsets.UTF_8));
             });
 
-        } else if (attachmentType == AttachmentType.LOGS){
+        } else if (attachmentType == AttachmentType.LOGS) {
 
             Allure.step("Логи браузера", () -> {
 
@@ -80,26 +80,42 @@ public class AllureModels {
 
     }
 
-    String getSessionId(){
-        if (testStand == TestStand.REMOTE){
+    @NotNull
+    private String getHTMLVideoCode() {
+
+        String videoCode;
+
+        if (testEnv != TestEnvironment.LOCAL){
+            videoCode = "<video width='100%' height='100%' controls autoplay>" +
+                    "<source src='" + getVideoUrl(getSessionId()) + "' type='video/mp4'></video>";
+        } else {
+            videoCode = "<h1>Видео не доступно.</h1>";
+        }
+
+        return "<html><body>" + videoCode + "</body></html>";
+
+    }
+
+    String getSessionId() {
+        if (testEnv == TestEnvironment.REMOTE) {
             return ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
-        }else{
+        } else {
             return sessionId().toString();
         }
     }
 
     @NotNull
     URL getVideoUrl(String sessionId) {
-        String videoUrl = "";
-        if (testStand == TestStand.REMOTE) {
-            videoUrl = "https://selenoid.autotests.cloud/video/" + sessionId + ".mp4";
-        } else{
+        String videoUrl;
+        if (testEnv == TestEnvironment.REMOTE) {
+            videoUrl = String.format("https://%s/video/%s.mp4", System.getenv("hostRemote"), sessionId);
+        } else {
             // Пока локально не сохраняет селеноид видео
             videoUrl = "";
         }
 
         try {
-            return new URL(videoUrl.toString());
+            return new URL(videoUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

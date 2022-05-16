@@ -1,5 +1,5 @@
 package guru.qa.com.demoqa.setup;
 
-public enum TestStand {
+public enum TestEnvironment {
     REMOTE, LOCAL
 }
