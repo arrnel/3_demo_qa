@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 public class TestBase {
 
     final static Logger log = LoggerFactory.getLogger(TestBase.class);
-    TestEnvironment testEnvironment = setTestEnvironment();
-    Credentials credentials = ConfigFactory.create(Credentials.class);
+    static TestEnvironment testEnvironment = setTestEnvironment();
+    static Credentials credentials = ConfigFactory.create(Credentials.class);
 
     /**
      * Действия перед запусками всех тестов
@@ -35,9 +35,9 @@ public class TestBase {
         TestEnvironment testEnv = new TestBase().testEnvironment;
 
         if (testEnv == TestEnvironment.REMOTE) {
-            new TestBase().remoteWebDriver();
+            remoteWebDriver();
         } else if (testEnv == TestEnvironment.LOCAL) {
-            new TestBase().localWebDriver();
+            localWebDriver();
         } else {
             throw new IllegalArgumentException("Некорректный тип окружения");
         }
@@ -54,9 +54,9 @@ public class TestBase {
 
     }
 
-    TestEnvironment setTestEnvironment() {
+    static TestEnvironment setTestEnvironment() {
 
-        String testEnvironmentProperty = System.getProperty("testEnvironment");
+        String testEnvironmentProperty = System.getProperty("testEnvironment", "local");
 
         if (testEnvironmentProperty.equals("local")) {
             testEnvironment = TestEnvironment.LOCAL;
@@ -69,20 +69,21 @@ public class TestBase {
         }
 
         return testEnvironment;
+
     }
 
     public TestEnvironment getTestEnvironment() {
         return testEnvironment;
     }
 
-    void localWebDriver() {
+    static void localWebDriver() {
         Configuration.browserSize = "2560x1440";
         Configuration.browser = "chrome";
         Configuration.browserVersion = "101.0";
     }
 
 
-    void remoteWebDriver() {
+    static void remoteWebDriver() {
 
         Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
         Configuration.browser = System.getProperty("browser", "chrome");
@@ -97,7 +98,7 @@ public class TestBase {
 
     }
 
-    String getRemoteURL() {
+    static String getRemoteURL() {
 
         String url = "";
         if (testEnvironment == TestEnvironment.REMOTE) {

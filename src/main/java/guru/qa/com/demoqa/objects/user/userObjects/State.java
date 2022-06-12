@@ -1,7 +1,6 @@
 package guru.qa.com.demoqa.objects.user.userObjects;
 
 import java.util.List;
-import java.util.Map;
 
 public enum State {
     NCR, UTTARPRADESH, HARYANA, RAJASTHAN;

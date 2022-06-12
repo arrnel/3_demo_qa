@@ -1,12 +1,5 @@
 package guru.qa.com.demoqa.objects.user.userObjects;
 
-import com.github.javafaker.Faker;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-
 public enum Hobby {
     SPORTS, READING, MUSIC;
 

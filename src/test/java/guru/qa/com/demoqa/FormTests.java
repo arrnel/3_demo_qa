@@ -41,7 +41,7 @@ class FormTests extends TestBase {
 
         //Assertions
         registration.assertFormValues(user);
-
+        
         log.info("Конец теста");
 
     }

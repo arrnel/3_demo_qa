@@ -2,10 +2,8 @@ package guru.qa.com.demoqa.templates;
 
 import com.github.javafaker.Faker;
 import guru.qa.com.demoqa.helpers.UserHelper;
-import guru.qa.com.demoqa.models.registration.RegistrationActions;
 import guru.qa.com.demoqa.objects.user.User;
 import guru.qa.com.demoqa.objects.user.userObjects.*;
-import lombok.Builder;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -17,15 +15,14 @@ import java.util.Random;
  */
 public class UsersTemplates {
 
-    RegistrationActions registration = new RegistrationActions();
-
     /**
      * @return Пользователь с всеми заполнеными корректными и генерируемыми данными
      */
     public User userWithAllCorrectData(User user) {
+
         Faker faker = new Faker(new Locale("ru"));
 
-        String  firstname = faker.name().firstName(),
+        String firstname = faker.name().firstName(),
                 lastName = faker.name().lastName(),
                 email = new Faker(new Locale("en")).internet().emailAddress(),
                 phoneNumber = faker.phoneNumber().subscriberNumber(10),

@@ -2,8 +2,6 @@ package guru.qa.com.demoqa.models.registration;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
-import guru.qa.com.demoqa.allure.AllureModels;
-import guru.qa.com.demoqa.allure.AttachmentType;
 import guru.qa.com.demoqa.helpers.DateConverter;
 import guru.qa.com.demoqa.helpers.UserHelper;
 import guru.qa.com.demoqa.objects.calendar.Calendar;
@@ -16,7 +14,6 @@ import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 import java.util.List;
 
 import static com.codeborne.selenide.Selectors.byText;
@@ -65,7 +62,7 @@ public class RegistrationActions {
      * @param firstName имя пользователя
      */
     @NotNull
-    public RegistrationActions fillFirstName(String firstName) {
+    RegistrationActions fillFirstName(String firstName) {
 
         if (firstName != null && !firstName.equals("")) {
 
@@ -87,7 +84,7 @@ public class RegistrationActions {
      * @param lastName фамилия пользователя
      */
     @NotNull
-    public RegistrationActions fillLastName(String lastName) {
+    RegistrationActions fillLastName(String lastName) {
 
         if (lastName != null && !lastName.equals("")) {
 
@@ -108,7 +105,7 @@ public class RegistrationActions {
      * @param gender пол пользователя
      */
     @NotNull
-    public RegistrationActions selectGender(Gender gender) {
+    RegistrationActions selectGender(Gender gender) {
 
         if (gender != null) {
 
@@ -132,7 +129,7 @@ public class RegistrationActions {
      * @param email почтовый ящик пользователя
      */
     @NotNull
-    public RegistrationActions fillEmail(String email) {
+    RegistrationActions fillEmail(String email) {
 
         if (!email.equals("")) {
 
@@ -154,7 +151,7 @@ public class RegistrationActions {
      * @param phoneNumber номер телефона пользователя
      */
     @NotNull
-    public RegistrationActions fillPhoneNumber(String phoneNumber) {
+    RegistrationActions fillPhoneNumber(String phoneNumber) {
 
         if (!phoneNumber.equals("")) {
 
@@ -179,7 +176,7 @@ public class RegistrationActions {
      * @param year  год рождения
      */
     @NotNull
-    public RegistrationActions fillDate(int day, int month, int year) {
+    RegistrationActions fillDate(int day, int month, int year) {
 
         Allure.step(String.format("Заполнить 'Date of Birth': %s.%s.%s", day, month, year), () -> {
             Calendar calendar = new Calendar();
@@ -197,7 +194,7 @@ public class RegistrationActions {
      * @param subjects - Список с enum Subject
      */
     @NotNull
-    public RegistrationActions fillSubjects(List<Subject> subjects) {
+    RegistrationActions fillSubjects(List<Subject> subjects) {
 
         if (subjects.size() != 0) {
 
@@ -224,7 +221,7 @@ public class RegistrationActions {
      * @param hobbies - Список с enum HOBBY
      */
     @NotNull
-    public RegistrationActions selectHobbies(List<Hobby> hobbies) {
+    RegistrationActions selectHobbies(List<Hobby> hobbies) {
 
         if (hobbies.size() != 0) {
 
@@ -255,7 +252,7 @@ public class RegistrationActions {
      * @param fileName - Имя изображения с расширением в "/src/test/resources/..."
      */
 
-    public RegistrationActions uploadPicture(String fileName) {
+    RegistrationActions uploadPicture(String fileName) {
 
         if (!fileName.equals("")) {
 
@@ -278,7 +275,7 @@ public class RegistrationActions {
      * @param address - адрес
      */
     @NotNull
-    public RegistrationActions fillAddress(String address) {
+    RegistrationActions fillAddress(String address) {
 
         if (!address.equals("")) {
 
@@ -300,7 +297,7 @@ public class RegistrationActions {
      * @param state регион
      */
     @NotNull
-    public RegistrationActions fillState(State state) {
+    RegistrationActions fillState(State state) {
 
         String stateText = State.getStateValue(state);
 
@@ -320,7 +317,7 @@ public class RegistrationActions {
      * @param city город
      */
     @NotNull
-    public RegistrationActions fillCity(City city) {
+    RegistrationActions fillCity(City city) {
 
         String cityText = City.getCityValue(city);
 
